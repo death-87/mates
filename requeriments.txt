@@ -1,9 +1,2 @@
 streamlit
 reportlab
-pandas
-gspread
-google-auth
-python-docx
-requests
-plotly
-streamlit-authenticator
