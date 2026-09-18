@@ -1,203 +1,212 @@
 import streamlit as st
 import random
-import math
 
-st.set_page_config(page_title="Ejercicios de Matemáticas — Triángulos", layout="wide")
-st.title("📐 Ejercicios de Triángulos y Trigonometría")
+st.set_page_config(page_title="Razones Trigonométricas — Ejercicios", layout="wide")
+st.title("🔺 Razones Trigonométricas — Ángulos Notables")
+st.subheader("30° · 45° · 60° · Elevación · Depresión")
 
-# ============== FUNCIONES AUXILIARES ==============
-def generar_triangulo_rectangulo():
-    """Genera un triángulo rectángulo con lados enteros"""
-    cateto1 = random.randint(3, 12)
-    cateto2 = random.randint(3, 12)
-    hipotenusa = round(math.hypot(cateto1, cateto2), 2)
-    angulo_alto = round(math.degrees(math.atan(cateto2 / cateto1)), 2)
-    return cateto1, cateto2, hipotenusa, angulo_alto
+# ============== BANCO DE PREGUNTAS ==============
+banco_preguntas = [
+    # === VALORES BÁSICOS ===
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula sen(30°)",
+        "respuesta": "1/2",
+        "explicacion": "sen(30°) = 1/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula cos(30°)",
+        "respuesta": "√3/2",
+        "explicacion": "cos(30°) = √3/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula sen(45°)",
+        "respuesta": "√2/2",
+        "explicacion": "sen(45°) = √2/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula cos(45°)",
+        "respuesta": "√2/2",
+        "explicacion": "cos(45°) = √2/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula sen(60°)",
+        "respuesta": "√3/2",
+        "explicacion": "sen(60°) = √3/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula cos(60°)",
+        "respuesta": "1/2",
+        "explicacion": "cos(60°) = 1/2."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula tan(30°)",
+        "respuesta": "√3/3",
+        "explicacion": "tan(30°) = sen(30°)/cos(30°) = (1/2) ÷ (√3/2) = √3/3"
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula tan(45°)",
+        "respuesta": "1",
+        "explicacion": "tan(45°) = 1."
+    },
+    {
+        "categoria": "Valores básicos",
+        "pregunta": "Calcula tan(60°)",
+        "respuesta": "√3",
+        "explicacion": "tan(60°) = sen(60°)/cos(60°) = √3"
+    },
+    
+    # === COMBINACIONES ===
+    {
+        "categoria": "Combinaciones",
+        "pregunta": "Calcula 2·sen(30°) + 3·cos(60°)",
+        "respuesta": "5/2",
+        "explicacion": "= 2·(1/2) + 3·(1/2) = 1 + 3/2 = 5/2"
+    },
+    {
+        "categoria": "Combinaciones",
+        "pregunta": "sen²(45°) + cos²(45°) = ?",
+        "respuesta": "1",
+        "explicacion": "= (√2/2)² + (√2/2)² = 2/4 + 2/4 = 1. ¡Identidad fundamental!"
+    },
+    {
+        "categoria": "Combinaciones",
+        "pregunta": "Calcula tan(60°) · cos(30°)",
+        "respuesta": "3/2",
+        "explicacion": "= √3 · (√3/2) = 3/2"
+    },
+    
+    # === ÁNGULO DE ELEVACIÓN ===
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Desde el suelo, se observa la cima de un árbol con un ángulo de elevación de 45°. Si estás a 12 metros de su base, ¿cuál es la altura del árbol?",
+        "respuesta": "12 m",
+        "explicacion": "tan(45°) = altura / distancia → 1 = h / 12 → h = 12 m"
+    },
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Una escalera apoya en una pared formando un ángulo de 60° con el suelo. Si la base está a 4 m de la pared, ¿qué altura alcanza en la pared?",
+        "respuesta": "4√3 m",
+        "explicacion": "tan(60°) = altura / 4 → √3 = h / 4 → h = 4√3 m"
+    },
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Se observa la parte superior de una torre con ángulo de elevación de 30°. Si la torre mide 10 m de alto, ¿a qué distancia está el observador de su base?",
+        "respuesta": "10√3 m",
+        "explicacion": "tan(30°) = 10 / d → √3/3 = 10 / d → d = 10 ÷ (√3/3) = 10√3 m"
+    },
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Un poste vertical proyecta una sombra de 8 m cuando el sol tiene un ángulo de elevación de 60°. ¿Cuál es la altura del poste?",
+        "respuesta": "8√3 m",
+        "explicacion": "tan(60°) = h / 8 → √3 = h / 8 → h = 8√3 m"
+    },
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Desde el suelo se ve la cima de un edificio con ángulo de 30°. El edificio mide 15 m de alto. ¿Cuál es la distancia horizontal al edificio?",
+        "respuesta": "15√3 m",
+        "explicacion": "tan(30°) = 15 / d → d = 15 / tan(30°) = 15 ÷ (√3/3) = 15√3 m"
+    },
+    {
+        "categoria": "📐 Ángulo de elevación",
+        "pregunta": "Una rampa forma un ángulo de 30° con el suelo y llega a una altura de 6 m. ¿Qué longitud tiene la rampa?",
+        "respuesta": "12 m",
+        "explicacion": "sen(30°) = 6 / rampa → 1/2 = 6 / rampa → rampa = 6 × 2 = 12 m"
+    },
+    
+    # === ÁNGULO DE DEPRESIÓN ===
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Desde lo alto de un faro de 30 m de altura, se observa un barco con un ángulo de depresión de 45°. ¿A qué distancia está el barco desde la base del faro?",
+        "respuesta": "30 m",
+        "explicacion": "El ángulo de depresión = ángulo de elevación en el barco → tan(45°) = 30 / d → 1 = 30 / d → d = 30 m"
+    },
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Desde un edificio de 18 m de alto, se observa un auto con ángulo de depresión de 60°. ¿Qué distancia horizontal hay entre el edificio y el auto?",
+        "respuesta": "6√3 m",
+        "explicacion": "tan(60°) = 18 / d → √3 = 18 / d → d = 18/√3 = 6√3 m"
+    },
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Un observador está en una torre de 20 m de altura y ve un árbol con ángulo de depresión de 30°. La distancia horizontal entre la torre y el árbol es de x metros. ¿Cuánto vale x?",
+        "respuesta": "20√3 m",
+        "explicacion": "tan(30°) = 20 / x → x = 20 / tan(30°) = 20 ÷ (√3/3) = 20√3 m"
+    },
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Desde un globo aerostático a una altura de 500 m, se observa una aldea con un ángulo de depresión de 30°. ¿Cuál es la distancia en línea recta entre el globo y la aldea?",
+        "respuesta": "1000 m",
+        "explicacion": "sen(30°) = 500 / hipotenusa → 1/2 = 500 / d → d = 500 × 2 = 1000 m"
+    },
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Desde la cima de una montaña de 450 m de altura, el ángulo de depresión hacia un pueblo en el valle mide 45°. ¿Qué distancia horizontal separa la montaña del pueblo?",
+        "respuesta": "450 m",
+        "explicacion": "tan(45°) = 450 / d → 1 = 450 / d → d = 450 m"
+    },
+    {
+        "categoria": "📉 Ángulo de depresión",
+        "pregunta": "Desde un helicóptero a 80 m de altura, se observa el techo de una casa con ángulo de depresión de 60°. ¿Cuál es la distancia horizontal entre el helicóptero y la casa?",
+        "respuesta": "(80√3)/3 m",
+        "explicacion": "tan(60°) = 80 / d → √3 = 80 / d → d = 80/√3 = (80√3)/3 m"
+    }
+]
 
-def generar_triangulo_cualquiera():
-    """Genera un triángulo cualquiera válido"""
-    while True:
-        a = random.randint(5, 15)
-        b = random.randint(5, 15)
-        c = random.randint(abs(a-b)+1, a+b-1)
-        if a + b > c and a + c > b and b + c > a:
-            break
-    s = (a + b + c) / 2
-    area = round(math.sqrt(s * (s-a) * (s-b) * (s-c)), 2)
-    return a, b, c, area
+# ============== INICIALIZAR SESIÓN ==============
+if "indice_actual" not in st.session_state:
+    st.session_state.indice_actual = random.randint(0, len(banco_preguntas)-1)
+if "mostrar_respuesta" not in st.session_state:
+    st.session_state.mostrar_respuesta = False
 
-# ============== MENU PRINCIPAL ==============
-menu = st.sidebar.radio("Selecciona el tipo de ejercicio", [
-    "📏 Área y Perímetro — Triángulo Rectángulo",
-    "📐 Ángulos del Triángulo Rectángulo",
-    "🔺 Razones Trigonométricas",
-    "📐 Triángulo Cualquiera — Ley de Cosenos"
-])
+# ============== SELECCIONAR PREGUNTA ==============
+indice = st.session_state.indice_actual
+pregunta_actual = banco_preguntas[indice]
 
-# ============== EJERCICIO 1: ÁREA Y PERÍMETRO ==============
-if menu == "📏 Área y Perímetro — Triángulo Rectángulo":
-    st.header("📏 Área y Perímetro — Triángulo Rectángulo")
-    
-    if "ej1" not in st.session_state:
-        st.session_state.ej1 = generar_triangulo_rectangulo()
-    
-    c1, c2, hip, ang = st.session_state.ej1
-    
-    st.info(f"""
-    📐 Tienes un triángulo rectángulo con:
-    - Cateto adyacente = **{c1} cm**
-    - Cateto opuesto = **{c2} cm**
-    """)
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        area_usuario = st.number_input("Calcula el ÁREA (cm²)", min_value=0.0, step=0.1)
-    with col2:
-        peri_usuario = st.number_input("Calcula el PERÍMETRO (cm)", min_value=0.0, step=0.1)
-    
-    area_correcta = (c1 * c2) / 2
-    peri_correcto = c1 + c2 + hip
-    
-    if st.button("✅ Verificar Respuesta"):
-        errores = []
-        if abs(area_usuario - area_correcta) < 0.01:
-            st.success(f"✅ ¡Área correcta! El área es {area_correcta} cm²")
-        else:
-            st.error(f"❌ Área incorrecta — Pista: Área = ({c1} × {c2}) ÷ 2 = {area_correcta} cm²")
-        
-        if abs(peri_usuario - peri_correcto) < 0.01:
-            st.success(f"✅ ¡Perímetro correcto! Es {peri_correcto} cm")
-        else:
-            st.error(f"❌ Perímetro incorrecto — Pista: suma de todos los lados = {c1} + {c2} + {hip} = {peri_correcto} cm")
-    
-    if st.button("🔄 Nuevo Ejercicio"):
-        st.session_state.ej1 = generar_triangulo_rectangulo()
-        st.rerun()
+# ============== TABLA DE REFERENCIA ==============
+with st.expander("📋 Ver tabla de valores — Ángulos notables"):
+    st.markdown("""
+| Ángulo θ | sen(θ) | cos(θ) | tan(θ) |
+|----------|--------|--------|--------|
+| **30°**  | 1/2    | √3/2   | √3/3   |
+| **45°**  | √2/2   | √2/2   | 1      |
+| **60°**  | √3/2   | 1/2    | √3     |
 
-# ============== EJERCICIO 2: ÁNGULOS ==============
-elif menu == "Ángulos del Triángulo Rectángulo":
-    st.header("📐 Ángulos del Triángulo Rectángulo")
-    
-    if "ej2" not in st.session_state:
-        st.session_state.ej2 = generar_triangulo_rectangulo()
-    
-    c1, c2, hip, ang = st.session_state.ej2
-    
-    st.info(f"""
-    📐 En este triángulo rectángulo:
-    - Cateto horizontal = **{c1} cm**
-    - Cateto vertical = **{c2} cm**
-    - Hipotenusa = **{hip} cm**
-       """)
-    
-    ang1 = st.number_input("¿Cuánto mide el ángulo en el vértice inferior izquierdo? (°)", min_value=0.0, max_value=90.0, step=0.5)
-    ang2 = st.number_input("¿Cuánto mide el ángulo en el vértice superior? (°)", min_value=0.0, max_value=90.0, step=0.5)
-    
-    ang_vert = ang
-    ang_sup = 90 - ang
-    
-    if st.button("✅ Verificar Ángulos"):
-        if abs(ang1 - ang_vert) < 1 or abs(ang1 - ang_sup) < 1:
-            st.success(f"✅ ¡Correcto! Ángulos: {ang_vert:.1f}° y {ang_sup:.1f}°")
-            st.info("💡 Recuerda: Los 3 ángulos suman 180°, así que 90° + ángulo1 + ángulo2 = 180°")
-        else:
-            st.error(f"❌ Revisa el cálculo — Los ángulos son aproximadamente {ang_vert:.1f}° y {ang_sup:.1f}°")
-    
-    if st.button("🔄 Nuevo Triángulo"):
-        st.session_state.ej2 = generar_triangulo_rectangulo()
-        st.rerun()
+> 💡 **Ángulo de elevación**: desde el suelo hacia arriba  
+> 💡 **Ángulo de depresión**: desde arriba hacia abajo — es igual al ángulo de elevación desde el objeto hacia el observador
+""")
 
-# ============== EJERCICIO 3: RAZONES TRIGONOMÉTRICAS ==============
-elif menu == "🔺 Razones Trigonométricas":
-    st.header("🔺 Razones Trigonométricas")
-    
-    if "ej3" not in st.session_state:
-        st.session_state.ej3 = generar_triangulo_rectangulo()
-    
-    c1, c2, hip, ang = st.session_state.ej3
-    
-    st.latex(r"""
-    \sin(\theta) = \frac{\text{opuesto}}{\text{hipotenusa}} \quad
-    \cos(\theta) = \frac{\text{adyacente}}{\text{hipotenusa}} \quad
-    \tan(\theta) = \frac{\text{opuesto}}{\text{adyacente}}
-    """)
-    
-    st.info(f"""
-    📐 Ángulo θ = **{ang:.1f}°**
-    - Cateto opuesto = **{c2} cm**
-    - Cateto adyacente = **{c1} cm**
-    - Hipotenusa = **{hip} cm**
-    """)
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        seno_u = st.number_input("sen(θ) =", min_value=0.0, max_value=1.0, step=0.01)
-    with col2:
-        coseno_u = st.number_input("cos(θ) =", min_value=0.0, max_value=1.0, step=0.01)
-    with col3:
-        tangente_u = st.number_input("tan(θ) =", min_value=0.0, step=0.01)
-    
-    seno_c = round(c2 / hip, 4)
-    cos_c = round(c1 / hip, 4)
-    tan_c = round(c2 / c1, 4)
-    
-    if st.button("✅ Comprobar Razones"):
-        st.write(f"""
-        | Razón | Tu respuesta | Valor correcto |
-        |-------|-------------|----------------|
-        | sen(θ) | {seno_u} | **{seno_c}** |
-        | cos(θ) | {coseno_u} | **{cos_c}** |
-        | tan(θ) | {tangente_u} | **{tan_c}** |
-        """)
-        st.info(f"""
-        💡 Cálculos:
-        - sen({ang:.1f}°) = {c2} ÷ {hip} = {seno_c}
-        - cos({ang:.1f}°) = {c1} ÷ {hip} = {cos_c}
-        - tan({ang:.1f}°) = {c2} ÷ {c1} = {tan_c}
-        """)
-    
-    if st.button("🔄 Nuevo Ángulo"):
-        st.session_state.ej3 = generar_triangulo_rectangulo()
-        st.rerun()
-
-# ============== EJERCICIO 4: LEY DE COSENOS ==============
-elif menu == "📐 Triángulo Cualquiera — Ley de Cosenos":
-    st.header("📐 Triángulo Cualquiera — Ley de Cosenos")
-    
-    if "ej4" not in st.session_state:
-        st.session_state.ej4 = generar_triangulo_cualquiera()
-    
-    a, b, c, area = st.session_state.ej4
-    
-    st.info(f"""
-    🔺 En un triángulo con:
-    - Lado a = **{a} cm**
-    - Lado b = **{b} cm**
-    - Lado c = **{c} cm**
-    """)
-    
-    st.latex(r"c^2 = a^2 + b^2 - 2ab \cdot \cos(C)")
-    
-    angulo_c = st.number_input("Calcula el ángulo opuesto al lado c (en grados)", min_value=0.0, max_value=180.0, step=1.0)
-    area_u = st.number_input("Calcula el área del triángulo (usando fórmula de Herón)", min_value=0.0, step=0.1)
-    
-    ang_c_correcto = math.degrees(math.acos((a**2 + b**2 - c**2) / (2*a*b)))
-    
-    if st.button("✅ Verificar"):
-        if abs(angulo_c - ang_c_correcto) < 1:
-            st.success(f"✅ ¡Ángulo correcto! = {ang_c_correcto:.1f}°")
-        else:
-            st.error(f"❌ Ángulo — El correcto es aproximadamente {ang_c_correcto:.1f}°")
-        
-        if abs(area_u - area) < 0.5:
-            st.success(f"✅ ¡Área correcta! = {area} cm²")
-        else:
-            st.error(f"❌ Área — Pista: semiperímetro s = {(a+b+c)/2} → Área = √s(s-a)(s-b)(s-c) = {area} cm²")
-    
-    if st.button("🔄 Nuevo Triángulo"):
-        st.session_state.ej4 = generar_triangulo_cualquiera()
-        st.rerun()
-
-# ============== PIE DE PÁGINA ==============
 st.divider()
-st.markdown("💡 **Consejo**: Usa la calculadora de tu celular para resolver cada ejercicio. ¡Buena suerte! 🧠✨")
+
+# ============== PREGUNTA ==============
+st.subheader(f"{pregunta_actual['categoria']}")
+st.info(f"📝 {pregunta_actual['pregunta']}")
+
+st.divider()
+
+# ============== BOTONES ==============
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("👁️ Ver Respuesta y Explicación", type="primary", use_container_width=True):
+        st.session_state.mostrar_respuesta = True
+    
+    if st.session_state.mostrar_respuesta:
+        st.success(f"✅ **Respuesta:** {pregunta_actual['respuesta']}")
+        st.info(f"💡 **Explicación:** {pregunta_actual['explicacion']}")
+
+with col2:
+    if st.button("🔄 Nueva Pregunta", use_container_width=True):
+        st.session_state.indice_actual = random.randint(0, len(banco_preguntas)-1)
+        st.session_state.mostrar_respuesta = False
+        st.rerun()
+
+st.divider()
+st.caption(f"Pregunta {indice + 1} de {len(banco_preguntas)} | {pregunta_actual['categoria']}")
