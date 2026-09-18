@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import os  # Importamos os para verificar la existencia de la imagen
 from datetime import datetime
 from io import BytesIO
 from reportlab.lib.pagesizes import letter
@@ -8,10 +9,11 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
+# Configuración de página (Debe ir primero)
 st.set_page_config(page_title="📐 Matemáticas — Triángulos", layout="wide")
-st.title("📐 Banco de Ejercicios — Triángulos y Trigonometría")
 
-# ============== BANCOS DE PREGUNTAS ==============
+
+# ============== BANCOS DE PREGUNTAS (Sin cambios) ==============
 
 banco_area_perimetro = [
     {"pregunta": "Un triángulo tiene base 12 cm y altura 8 cm. Calcula su área.", "respuesta": "48 cm²", "explicacion": "Área = (12 × 8) ÷ 2 = 48 cm²"},
@@ -101,7 +103,7 @@ banco_alternativas = [
     {"pregunta": "Un triángulo con lados de 3 cm, 4 cm y 5 cm es:", "opciones": ["A) Equilátero", "B) Isósceles", "C) Rectángulo", "D) Obtusángulo"], "respuesta_correcta": "C", "explicacion": "3² + 4² = 5² → cumple el teorema de Pitágoras ✅"}
 ]
 
-# ============== ESTILOS PDF PROFESIONAL ==============
+# ============== ESTILOS PDF PROFESIONAL (Sin cambios) ==============
 def crear_estilos():
     estilos = getSampleStyleSheet()
     estilo_titulo = ParagraphStyle(
@@ -131,7 +133,7 @@ def crear_estilos():
         'pregunta': estilo_pregunta, 'respuesta': estilo_respuesta, 'explicacion': estilo_explicacion
     }
 
-# ============== GENERAR PDF DE ALTERNATIVAS ==============
+# ============== GENERAR PDF DE ALTERNATIVAS (Sin cambios) ==============
 def generar_pdf_alternativas(preguntas, titulo, fecha, con_respuestas=False):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
@@ -177,7 +179,7 @@ def generar_pdf_alternativas(preguntas, titulo, fecha, con_respuestas=False):
     buffer.seek(0)
     return buffer
 
-# ============== GENERAR PDF DE DESARROLLO ==============
+# ============== GENERAR PDF DE DESARROLLO (Sin cambios) ==============
 def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
@@ -223,13 +225,14 @@ def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
     buffer.seek(0)
     return buffer
 
-# ============== FUNCIONES AUXILIARES ==============
+# ============== FUNCIONES AUXILIARES (Sin cambios) ==============
 def inicializar_sesion(clave, valor_inicial):
     if clave not in st.session_state:
         st.session_state[clave] = valor_inicial
 
 def mostrar_banco(titulo, banco, clave_sesion):
-    st.header(titulo)
+    if titulo: # Solo mostrar cabecera si hay título
+        st.header(titulo)
     inicializar_sesion(f"{clave_sesion}_indice", random.randint(0, len(banco)-1))
     inicializar_sesion(f"{clave_sesion}_ver", False)
     
@@ -254,36 +257,83 @@ def mostrar_banco(titulo, banco, clave_sesion):
             st.rerun()
     st.caption(f"Pregunta {idx+1} de {len(banco)}")
 
-# ============== PESTAÑAS ==============
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
-    "📏 Área y Perímetro",
-    "📐 Ángulos del Triángulo",
-    "📐 Teorema de Pitágoras",
-    "📐 Ley de Cosenos",
-    "🔺 Razones Trigonométricas",
-    "📝 Prueba Alternativas",
-    "📄 Generar Prueba"
-])
+# =============================================================
+# ============== ✅ NUEVO DASHBOARD (SIDEBAR) ✅ ==============
+# =============================================================
 
-with tab1:
+with st.sidebar:
+    st.title("Dashboard 📊")
+    
+    # --- INTRODUCCIÓN DE LA FOTO ---
+    ruta_imagen = "IMG_7157.jpeg"
+    
+    # Verificamos si la imagen existe antes de intentar cargarla
+    if os.path.exists(ruta_imagen):
+        st.image(ruta_imagen, use_container_width=True, caption="Panel de Control")
+    else:
+        # Mensaje de error amigable si no encuentra la foto
+        st.error(f"⚠️ No se encontró la imagen: {ruta_imagen}")
+        st.info("Asegúrate de que la foto esté en la misma carpeta que este script.")
+    
+    st.divider()
+    
+    # --- INTRODUCCIÓN DE LAS OPCIONES (NAVEGACIÓN) ---
+    st.subheader("Selecciona una sección:")
+    opcion_menu = st.radio(
+        "Navegación",
+        [
+            "🏠 Inicio",
+            "📏 Área y Perímetro",
+            "📐 Ángulos del Triángulo",
+            "📐 Teorema de Pitágoras",
+            "📐 Ley de Cosenos",
+            "🔺 Razones Trigonométricas",
+            "📝 Prueba Alternativas",
+            "📄 Generar Prueba Desarrollo"
+        ],
+        label_visibility="collapsed" # Oculta el título del radio para que se vea más limpio
+    )
+    
+    st.divider()
+    st.caption("💡 Banco de ejercicios v1.0")
+
+# ===============================================================
+# ============== LÓGICA DE VISUALIZACIÓN PRINCIPAL ==============
+# ===============================================================
+
+# Título principal siempre visible
+st.title("📐 Banco de Ejercicios — Triángulos y Trigonometría")
+
+# Dependiendo de lo seleccionado en el Dashboard (sidebar), mostramos un contenido u otro
+if opcion_menu == "🏠 Inicio":
+    st.subheader("¡Bienvenido!")
+    st.markdown("""
+    Utiliza el menú de la izquierda (**Dashboard**) para navegar por las distintas secciones:
+    
+    *   **Práctica Interactiva:** Repasa ejercicios de las 5 categorías matemáticas.
+    *   **Generación de Evaluaciones:** Crea pruebas en PDF (Alternativas o Desarrollo) con su respectivo solucionario listos para imprimir.
+    """)
+    st.info("Selecciona un tema en el menú para comenzar.")
+
+elif opcion_menu == "📏 Área y Perímetro":
     mostrar_banco("📏 Área y Perímetro", banco_area_perimetro, "area")
 
-with tab2:
+elif opcion_menu == "📐 Ángulos del Triángulo":
     mostrar_banco("📐 Ángulos del Triángulo", banco_angulos, "angulos")
 
-with tab3:
+elif opcion_menu == "📐 Teorema de Pitágoras":
     mostrar_banco("📐 Teorema de Pitágoras", banco_pitagoras, "pitagoras")
     st.divider()
     st.info("💡 Teorema: a² + b² = c²")
 
-with tab4:
+elif opcion_menu == "📐 Ley de Cosenos":
     mostrar_banco("📐 Ley de Cosenos", banco_cosenos, "cosenos")
     st.divider()
     st.latex(r"c^2 = a^2 + b^2 - 2ab \cdot \cos(C)")
 
-with tab5:
+elif opcion_menu == "🔺 Razones Trigonométricas":
     st.header("🔺 Razones Trigonométricas — Ángulos Notables")
-    with st.expander("📋 Tabla de valores"):
+    with st.expander("📋 Tabla de valores", expanded=True):
         st.markdown("""
 | Ángulo θ | sen(θ) | cos(θ) | tan(θ) |
 |----------|--------|--------|--------|
@@ -294,61 +344,76 @@ with tab5:
     st.divider()
     mostrar_banco("", banco_trigonometria, "trigo")
 
-with tab6:
+elif opcion_menu == "📝 Prueba Alternativas":
     st.header("📝 Generar Prueba de Alternativas")
     st.info("Selecciona la cantidad de preguntas y genera una prueba con alternativas + solucionario en PDF.")
     
-    cant_alt = st.slider("Cantidad de preguntas:", 3, len(banco_alternativas), 10, key="cant_alt")
-    nombre_alt = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Triángulos", key="nombre_alt")
-    fecha_hoy = datetime.now().strftime("%d/%m/%Y")
-    
-    if st.button("📄 Generar PDF de Alternativas", type="primary", key="gen_alt"):
-        prueba_alt = random.sample(banco_alternativas, cant_alt)
-        random.shuffle(prueba_alt)
+    # Contenedor para organizar mejor
+    with st.container(border=True):
+        col_config1, col_config2 = st.columns(2)
+        with col_config1:
+            cant_alt = st.slider("Cantidad de preguntas:", 3, len(banco_alternativas), min(10, len(banco_alternativas)), key="cant_alt")
+        with col_config2:
+            nombre_alt = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Triángulos", key="nombre_alt")
         
-        pdf_prueba = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=False)
-        pdf_sol = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=True)
-        
-        st.success(f"✅ ¡Prueba generada con {len(prueba_alt)} preguntas! Descarga tus archivos a continuación:")
-        
-        col_a, col_b = st.columns(2)
-        with col_a:
-            st.download_button(
-                "📥 Descargar PRUEBA (.pdf)",
-                data=pdf_prueba,
-                file_name=f"Prueba_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
-                mime="application/pdf"
-            )
-        with col_b:
-            st.download_button(
-                "📥 Descargar SOLUCIONARIO (.pdf)",
-                data=pdf_sol,
-                file_name=f"Solucionario_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
-                mime="application/pdf"
-            )
-        
-        st.divider()
-        st.subheader("👁️ Vista previa de la prueba:")
-        for i, p in enumerate(prueba_alt, 1):
-            st.markdown(f"**{i}.** {p['pregunta']}")
-            for op in p["opciones"]:
-                st.write(f"   {op}")
-            st.markdown(f"*Respuesta correcta: **{p['respuesta_correcta']}***")
-            st.divider()
+        fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+        btn_generar = st.button("📄 Generar Archivos PDF", type="primary", key="gen_alt")
 
-with tab7:
+    if btn_generar:
+        with st.spinner("Generando PDFs..."):
+            prueba_alt = random.sample(banco_alternativas, cant_alt)
+            random.shuffle(prueba_alt)
+            
+            pdf_prueba = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=False)
+            pdf_sol = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=True)
+            
+            st.success(f"✅ ¡Prueba generada con {len(prueba_alt)} preguntas!")
+            
+            col_a, col_b = st.columns(2)
+            with col_a:
+                st.download_button(
+                    "📥 Descargar PRUEBA (.pdf)",
+                    data=pdf_prueba,
+                    file_name=f"Prueba_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True
+                )
+            with col_b:
+                st.download_button(
+                    "📥 Descargar SOLUCIONARIO (.pdf)",
+                    data=pdf_sol,
+                    file_name=f"Solucionario_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
+                    mime="application/pdf",
+                    use_container_width=True
+                )
+            
+            st.divider()
+            st.subheader("👁️ Vista previa rápida de preguntas:")
+            for i, p in enumerate(prueba_alt, 1):
+                st.markdown(f"**{i}.** {p['pregunta']}")
+                # Mostrar solo la primera opción como demo en vista previa
+                st.caption(f"Demo opciones: {p['opciones'][0]} ...")
+
+elif opcion_menu == "📄 Generar Prueba Desarrollo":
     st.header("📄 Generar Prueba de Desarrollo")
     st.info("Selecciona los temas y genera una prueba con ejercicios de desarrollo + solucionario en PDF.")
     
-    temas_seleccion = st.multiselect(
-        "Selecciona los temas:",
-        ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas"],
-        key="temas_dev"
-    )
-    
-    cant_preg = st.slider("Cantidad de ejercicios por tema:", 2, 6, 4, key="cant_dev")
-    nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Triángulos y Trigonometría", key="nombre_dev")
-    fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+    with st.container(border=True):
+        temas_seleccion = st.multiselect(
+            "Selecciona los temas a incluir:",
+            ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas"],
+            default=["Área y Perímetro", "Teorema de Pitágoras"],
+            key="temas_dev"
+        )
+        
+        col_c1, col_c2 = st.columns(2)
+        with col_c1:
+            cant_preg = st.slider("Ejercicios por tema:", 1, 8, 4, key="cant_dev")
+        with col_c2:
+            nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Desarrollo — Triángulos", key="nombre_dev")
+        
+        fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+        btn_generar_dev = st.button("📄 Generar Archivos PDF", type="primary", key="gen_dev")
     
     mapeo_bancos = {
         "Área y Perímetro": banco_area_perimetro,
@@ -358,44 +423,54 @@ with tab7:
         "Razones Trigonométricas": banco_trigonometria
     }
     
-    if st.button("📄 Generar PDF de Desarrollo", type="primary", key="gen_dev"):
+    if btn_generar_dev:
         if not temas_seleccion:
             st.warning("⚠️ Selecciona al menos un tema")
         else:
-            prueba_preguntas = []
-            for tema in temas_seleccion:
-                banco = mapeo_bancos[tema]
-                seleccion = random.sample(banco, min(cant_preg, len(banco)))
-                prueba_preguntas.extend(seleccion)
-            random.shuffle(prueba_preguntas)
-            
-            pdf_prueba = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=False)
-            pdf_sol = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=True)
-            
-            st.success(f"✅ ¡Prueba generada con {len(prueba_preguntas)} ejercicios! Descarga tus archivos a continuación:")
-            
-            col_a, col_b = st.columns(2)
-            with col_a:
-                st.download_button(
-                    "📥 Descargar PRUEBA (.pdf)",
-                    data=pdf_prueba,
-                    file_name=f"Prueba_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
-                    mime="application/pdf"
-                )
-            with col_b:
-                st.download_button(
-                    "📥 Descargar SOLUCIONARIO (.pdf)",
-                    data=pdf_sol,
-                    file_name=f"Solucionario_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
-                    mime="application/pdf"
-                )
-            
-            st.divider()
-            st.subheader("👁️ Vista previa de la prueba:")
-            for i, p in enumerate(prueba_preguntas, 1):
-                st.markdown(f"**{i}.** {p['pregunta']}")
-                st.markdown(f"*Respuesta: {p['respuesta']}*")
+            with st.spinner("Generando PDFs..."):
+                prueba_preguntas = []
+                for tema in temas_seleccion:
+                    banco = mapeo_bancos[tema]
+                    # Ajuste de seguridad por si pides más preguntas de las que existen
+                    cantidad_real = min(cant_preg, len(banco))
+                    seleccion = random.sample(banco, cantidad_real)
+                    # Añadir info del tema a la pregunta para la vista previa
+                    for sp in seleccion:
+                        sp['_tema'] = tema
+                    prueba_preguntas.extend(seleccion)
+                
+                random.shuffle(prueba_preguntas)
+                
+                pdf_prueba = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=False)
+                pdf_sol = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=True)
+                
+                st.success(f"✅ ¡Prueba generada con {len(prueba_preguntas)} ejercicios!")
+                
+                col_a, col_b = st.columns(2)
+                with col_a:
+                    st.download_button(
+                        "📥 Descargar PRUEBA (.pdf)",
+                        data=pdf_prueba,
+                        file_name=f"Prueba_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True
+                    )
+                with col_b:
+                    st.download_button(
+                        "📥 Descargar SOLUCIONARIO (.pdf)",
+                        data=pdf_sol,
+                        file_name=f"Solucionario_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
+                        mime="application/pdf",
+                        use_container_width=True
+                    )
+                
                 st.divider()
+                st.subheader("👁️ Vista previa rápida:")
+                for i, p in enumerate(prueba_preguntas[:5], 1): # Muestra max 5 en vista previa
+                    st.markdown(f"**{i}.** [{p.get('_tema', '')}] {p['pregunta']}")
+                if len(prueba_preguntas) > 5:
+                    st.caption(f"... y {len(prueba_preguntas)-5} ejercicios más en el PDF.")
 
+# Pie de página final
 st.divider()
 st.caption("💡 Los archivos se descargan directamente en PDF con diseño profesional. ¡Buena suerte! 🧠✨")
