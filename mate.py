@@ -1,213 +1,227 @@
 import streamlit as st
 import random
 from datetime import datetime
+from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import cm
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
 
 st.set_page_config(page_title="📐 Matemáticas — Triángulos", layout="wide")
 st.title("📐 Banco de Ejercicios — Triángulos y Trigonometría")
 
 # ============== BANCOS DE PREGUNTAS ==============
 
-# --- ÁREA Y PERÍMETRO ---
 banco_area_perimetro = [
-    {
-        "pregunta": "Un triángulo tiene base 12 cm y altura 8 cm. Calcula su área.",
-        "respuesta": "48 cm²",
-        "explicacion": "Área = (base × altura) ÷ 2 = (12 × 8) ÷ 2 = 48 cm²"
-    },
-    {
-        "pregunta": "Un triángulo equilátero tiene lado de 10 cm. Calcula su perímetro.",
-        "respuesta": "30 cm",
-        "explicacion": "Perímetro = 3 × lado = 3 × 10 = 30 cm"
-    },
-    {
-        "pregunta": "Un triángulo rectángulo tiene catetos de 6 cm y 8 cm, y su hipotenusa mide 10 cm. Calcula su perímetro.",
-        "respuesta": "24 cm",
-        "explicacion": "Perímetro = 6 + 8 + 10 = 24 cm"
-    },
-    {
-        "pregunta": "Un triángulo tiene base 15 m y altura 6 m. Calcula su área.",
-        "respuesta": "45 m²",
-        "explicacion": "Área = (15 × 6) ÷ 2 = 90 ÷ 2 = 45 m²"
-    },
-    {
-        "pregunta": "Un triángulo tiene lados de 7 cm, 9 cm y 12 cm. Calcula su perímetro.",
-        "respuesta": "28 cm",
-        "explicacion": "Perímetro = 7 + 9 + 12 = 28 cm"
-    },
-    {
-        "pregunta": "Un triángulo isósceles tiene lados iguales de 5 cm y la base mide 6 cm. Calcula su perímetro.",
-        "respuesta": "16 cm",
-        "explicacion": "Perímetro = 5 + 5 + 6 = 16 cm"
-    },
-    {
-        "pregunta": "Calcula la altura de un triángulo cuya base mide 14 cm y su área es 49 cm².",
-        "respuesta": "7 cm",
-        "explicacion": "Área = (base × altura)/2 → 49 = (14 × h)/2 → 49 = 7h → h = 7 cm"
-    },
-    {
-        "pregunta": "Un triángulo tiene base 12 cm y altura igual a la mitad de la base. Calcula su área.",
-        "respuesta": "36 cm²",
-        "explicacion": "Altura = 12 ÷ 2 = 6 cm → Área = (12 × 6) ÷ 2 = 36 cm²"
-    }
+    {"pregunta": "Un triángulo tiene base 12 cm y altura 8 cm. Calcula su área.", "respuesta": "48 cm²", "explicacion": "Área = (12 × 8) ÷ 2 = 48 cm²"},
+    {"pregunta": "Un triángulo equilátero tiene lado de 10 cm. Calcula su perímetro.", "respuesta": "30 cm", "explicacion": "Perímetro = 3 × 10 = 30 cm"},
+    {"pregunta": "Un triángulo rectángulo tiene catetos de 6 cm y 8 cm, y su hipotenusa mide 10 cm. Calcula su perímetro.", "respuesta": "24 cm", "explicacion": "6 + 8 + 10 = 24 cm"},
+    {"pregunta": "Un triángulo tiene base 15 m y altura 6 m. Calcula su área.", "respuesta": "45 m²", "explicacion": "(15 × 6) ÷ 2 = 45 m²"},
+    {"pregunta": "Un triángulo tiene lados de 7 cm, 9 cm y 12 cm. Calcula su perímetro.", "respuesta": "28 cm", "explicacion": "7 + 9 + 12 = 28 cm"},
+    {"pregunta": "Un triángulo isósceles tiene lados iguales de 5 cm y la base mide 6 cm. Calcula su perímetro.", "respuesta": "16 cm", "explicacion": "5 + 5 + 6 = 16 cm"},
+    {"pregunta": "Calcula la altura de un triángulo cuya base mide 14 cm y su área es 49 cm².", "respuesta": "7 cm", "explicacion": "49 = (14 × h)/2 → h = 7 cm"},
+    {"pregunta": "Un triángulo tiene base 12 cm y altura igual a la mitad de la base. Calcula su área.", "respuesta": "36 cm²", "explicacion": "Altura = 6 cm → Área = (12 × 6) ÷ 2 = 36 cm²"}
 ]
 
-# --- ÁNGULOS DEL TRIÁNGULO ---
 banco_angulos = [
-    {
-        "pregunta": "Dos ángulos de un triángulo miden 40° y 65°. ¿Cuánto mide el tercer ángulo?",
-        "respuesta": "75°",
-        "explicacion": "La suma de los ángulos es 180° → 180° − (40° + 65°) = 75°"
-    },
-    {
-        "pregunta": "En un triángulo rectángulo, un ángulo agudo mide 32°. ¿Cuánto mide el otro ángulo agudo?",
-        "respuesta": "58°",
-        "explicacion": "90° − 32° = 58°"
-    },
-    {
-        "pregunta": "Un triángulo es equilátero. ¿Cuánto mide cada uno de sus ángulos?",
-        "respuesta": "60°",
-        "explicacion": "180° ÷ 3 = 60°"
-    },
-    {
-        "pregunta": "Un triángulo tiene un ángulo de 110°, y los otros dos ángulos son iguales. ¿Cuánto mide cada uno?",
-        "respuesta": "35°",
-        "explicacion": "180° − 110° = 70° → 70° ÷ 2 = 35°"
-    },
-    {
-        "pregunta": "Si un triángulo tiene dos ángulos de 55° cada uno, ¿de qué tipo de triángulo se trata y cuánto mide el tercer ángulo?",
-        "respuesta": "Isósceles, 70°",
-        "explicacion": "180° − 55° − 55° = 70°. Tiene dos ángulos iguales, por lo tanto es isósceles."
-    },
-    {
-        "pregunta": "Los tres ángulos de un triángulo son proporcionales a 1, 2 y 3. ¿Cuánto mide cada ángulo?",
-        "respuesta": "30°, 60° y 90°",
-        "explicacion": "x + 2x + 3x = 180° → 6x = 180° → x = 30° → 30°, 60°, 90°"
-    },
-    {
-        "pregunta": "Un ángulo exterior de un triángulo mide 125°, y uno de los ángulos interiores opuestos mide 48°. ¿Cuánto mide el otro ángulo interior opuesto?",
-        "respuesta": "77°",
-        "explicacion": "Ángulo exterior = suma de los dos interiores opuestos → 125° − 48° = 77°"
-    },
-    {
-        "pregunta": "En un triángulo, el ángulo mayor mide el doble que el mediano y el triple que el menor. ¿Cuánto mide cada ángulo?",
-        "respuesta": "30°, 60°, 90°",
-        "explicacion": "30° + 60° + 90° = 180°. El mayor es el triple del menor y el doble del mediano."
-    }
+    {"pregunta": "Dos ángulos de un triángulo miden 40° y 65°. ¿Cuánto mide el tercer ángulo?", "respuesta": "75°", "explicacion": "180° − 105° = 75°"},
+    {"pregunta": "En un triángulo rectángulo, un ángulo agudo mide 32°. ¿Cuánto mide el otro ángulo agudo?", "respuesta": "58°", "explicacion": "90° − 32° = 58°"},
+    {"pregunta": "Un triángulo es equilátero. ¿Cuánto mide cada uno de sus ángulos?", "respuesta": "60°", "explicacion": "180° ÷ 3 = 60°"},
+    {"pregunta": "Un triángulo tiene un ángulo de 110°, y los otros dos ángulos son iguales. ¿Cuánto mide cada uno?", "respuesta": "35°", "explicacion": "70° ÷ 2 = 35°"},
+    {"pregunta": "Si un triángulo tiene dos ángulos de 55° cada uno, ¿de qué tipo es y cuánto mide el tercer ángulo?", "respuesta": "Isósceles, 70°", "explicacion": "180° − 110° = 70°, tiene dos ángulos iguales."},
+    {"pregunta": "Los tres ángulos de un triángulo son proporcionales a 1, 2 y 3. ¿Cuánto mide cada ángulo?", "respuesta": "30°, 60° y 90°", "explicacion": "x + 2x + 3x = 180° → x = 30°"},
+    {"pregunta": "Un ángulo exterior de un triángulo mide 125°, y uno de los ángulos interiores opuestos mide 48°. ¿Cuánto mide el otro?", "respuesta": "77°", "explicacion": "125° − 48° = 77°"},
+    {"pregunta": "En un triángulo, el ángulo mayor es el doble que el mediano y el triple que el menor. ¿Cuánto mide cada uno?", "respuesta": "30°, 60°, 90°", "explicacion": "30 + 60 + 90 = 180° ✅"}
 ]
 
-# --- TEOREMA DE PITÁGORAS ---
 banco_pitagoras = [
-    {
-        "pregunta": "Los catetos de un triángulo rectángulo miden 3 cm y 4 cm. ¿Cuánto mide la hipotenusa?",
-        "respuesta": "5 cm",
-        "explicacion": "c² = a² + b² → c² = 3² + 4² = 9 + 16 = 25 → c = 5 cm"
-    },
-    {
-        "pregunta": "Un cateto mide 12 cm y la hipotenusa 13 cm. ¿Cuánto mide el otro cateto?",
-        "respuesta": "5 cm",
-        "explicacion": "b² = c² − a² → b² = 13² − 12² = 169 − 144 = 25 → b = 5 cm"
-    },
-    {
-        "pregunta": "Los catetos miden 5 cm y 7 cm. Calcula la longitud de la hipotenusa.",
-        "respuesta": "√74 cm",
-        "explicacion": "c² = 5² + 7² = 25 + 49 = 74 → c = √74 cm"
-    },
-    {
-        "pregunta": "Una escalera de 10 m de longitud apoya contra una pared. La base está a 6 m de la pared. ¿Qué altura alcanza en la pared?",
-        "respuesta": "8 m",
-        "explicacion": "h² + 6² = 10² → h² + 36 = 100 → h² = 64 → h = 8 m"
-    },
-    {
-        "pregunta": "La hipotenusa de un triángulo rectángulo mide 18 cm y un cateto mide 9 cm. ¿Cuánto mide el otro cateto?",
-        "respuesta": "9√3 cm",
-        "explicacion": "b² = 18² − 9² = 324 − 81 = 243 → b = √243 = 9√3 cm"
-    },
-    {
-        "pregunta": "Calcula el perímetro de un triángulo rectángulo cuyos catetos miden 8 cm y 15 cm.",
-        "respuesta": "40 cm",
-        "explicacion": "Hipotenusa: √(8² + 15²) = √289 = 17 cm → Perímetro = 8 + 15 + 17 = 40 cm"
-    },
-    {
-        "pregunta": "¿Es un triángulo rectángulo si sus lados miden 6 cm, 8 cm y 10 cm?",
-        "respuesta": "Sí, es rectángulo",
-        "explicacion": "6² + 8² = 36 + 64 = 100 = 10² → Cumple el teorema de Pitágoras ✅"
-    },
-    {
-        "pregunta": "Calcula la diagonal de un rectángulo de 12 cm de largo y 5 cm de ancho.",
-        "respuesta": "13 cm",
-        "explicacion": "d² = 12² + 5² = 144 + 25 = 169 → d = 13 cm"
-    }
+    {"pregunta": "Los catetos de un triángulo rectángulo miden 3 cm y 4 cm. ¿Cuánto mide la hipotenusa?", "respuesta": "5 cm", "explicacion": "3² + 4² = 9 + 16 = 25 → √25 = 5 cm"},
+    {"pregunta": "Un cateto mide 12 cm y la hipotenusa 13 cm. ¿Cuánto mide el otro cateto?", "respuesta": "5 cm", "explicacion": "13² − 12² = 169 − 144 = 25 → √25 = 5 cm"},
+    {"pregunta": "Los catetos miden 5 cm y 7 cm. Calcula la hipotenusa.", "respuesta": "√74 cm", "explicacion": "5² + 7² = 25 + 49 = 74 → √74 cm"},
+    {"pregunta": "Una escalera de 10 m apoya en una pared. Su base está a 6 m de la pared. ¿Qué altura alcanza?", "respuesta": "8 m", "explicacion": "h² + 6² = 10² → h = 8 m"},
+    {"pregunta": "Hipotenusa = 18 cm, un cateto = 9 cm. ¿Cuánto mide el otro cateto?", "respuesta": "9√3 cm", "explicacion": "18² − 9² = 243 → √243 = 9√3 cm"},
+    {"pregunta": "Catetos 8 cm y 15 cm. Calcula el perímetro.", "respuesta": "40 cm", "explicacion": "Hipotenusa = 17 cm → 8 + 15 + 17 = 40 cm"},
+    {"pregunta": "¿Es rectángulo un triángulo de lados 6, 8 y 10 cm?", "respuesta": "Sí", "explicacion": "6² + 8² = 36 + 64 = 100 = 10² ✅"},
+    {"pregunta": "Calcula la diagonal de un rectángulo de 12 cm × 5 cm.", "respuesta": "13 cm", "explicacion": "d² = 12² + 5² = 169 → d = 13 cm"}
 ]
 
-# --- LEY DE COSENOS ---
 banco_cosenos = [
-    {
-        "pregunta": "En un triángulo, dos lados miden 5 cm y 7 cm, y el ángulo entre ellos es de 60°. Calcula el tercer lado.",
-        "respuesta": "√39 cm",
-        "explicacion": "c² = a² + b² − 2ab·cos(C) → c² = 25 + 49 − 35 = 39 → c = √39 cm"
-    },
-    {
-        "pregunta": "Un triángulo tiene lados de 8 cm, 10 cm y 12 cm. Calcula el ángulo opuesto al lado de 10 cm.",
-        "respuesta": "≈ 55.77°",
-        "explicacion": "10² = 8² + 12² − 2·8·12·cos(B) → cos(B) = 9/16 → B ≈ 55.77°"
-    },
-    {
-        "pregunta": "Dos lados de un triángulo miden 6 m y 9 m, formando un ángulo de 45° entre ellos. Calcula el tercer lado.",
-        "respuesta": "√(117 − 54√2) m",
-        "explicacion": "c² = 36 + 81 − 108·(√2/2) = 117 − 54√2 → c = √(117 − 54√2) m"
-    },
-    {
-        "pregunta": "Un triángulo tiene lados de 10 cm, 10 cm y 12 cm. Calcula su área usando la ley de cosenos.",
-        "respuesta": "48 cm²",
-        "explicacion": "cos(C) = 0.28 → sen(C) = 0.96 → Área = (10·10·0.96)/2 = 48 cm² ✅"
-    },
-    {
-        "pregunta": "En un triángulo, el lado a = 8 cm, el lado b = 6 cm y el ángulo C = 120°. Calcula el lado c.",
-        "respuesta": "√148 cm",
-        "explicacion": "c² = 64 + 36 − 96·(-1/2) = 100 + 48 = 148 → c = √148 cm"
-    },
-    {
-        "pregunta": "Un triángulo tiene lados a = 7 cm, b = 9 cm y c = 12 cm. Calcula el ángulo entre los lados a y b.",
-        "respuesta": "≈ 96.38°",
-        "explicacion": "144 = 49 + 81 − 126·cos(C) → cos(C) = -1/9 → C ≈ 96.38°"
-    },
-    {
-        "pregunta": "Un paralelogramo tiene lados de 8 cm y 5 cm, y uno de sus ángulos interiores mide 60°. Calcula la longitud de su diagonal mayor.",
-        "respuesta": "√129 cm",
-        "explicacion": "d² = 64 + 25 − 80·(-1/2) = 89 + 40 = 129 → d = √129 cm"
-    },
-    {
-        "pregunta": "Calcula el ángulo mayor de un triángulo con lados de 13 cm, 14 cm y 15 cm.",
-        "respuesta": "≈ 67.38°",
-        "explicacion": "15² = 13² + 14² − 2·13·14·cos(C) → cos(C) = 5/13 → C ≈ 67.38° ✅"
-    }
+    {"pregunta": "Lados 5 cm y 7 cm con ángulo de 60° entre ellos. Tercer lado = ?", "respuesta": "√39 cm", "explicacion": "c² = 25 + 49 − 35 = 39 → √39 cm"},
+    {"pregunta": "Lados 8, 10 y 12 cm. Ángulo opuesto al de 10 cm = ?", "respuesta": "≈ 55.77°", "explicacion": "cos(B) = 9/16 → B ≈ 55.77°"},
+    {"pregunta": "Lados 6 m y 9 m con ángulo de 45° entre ellos. Tercer lado = ?", "respuesta": "√(117 − 54√2) m", "explicacion": "c² = 36 + 81 − 54√2"},
+    {"pregunta": "Lados 10, 10 y 12 cm. Área = ?", "respuesta": "48 cm²", "explicacion": "Área = (10 × 10 × sen(C))/2 = 48 cm²"},
+    {"pregunta": "Lados 8 cm y 6 cm con ángulo de 120° entre ellos. Tercer lado = ?", "respuesta": "√148 cm", "explicacion": "c² = 64 + 36 + 48 = 148 → √148 cm"},
+    {"pregunta": "Lados 7, 9 y 12 cm. Ángulo entre los lados de 7 y 9 cm = ?", "respuesta": "≈ 96.38°", "explicacion": "cos(C) = -1/9 → C ≈ 96.38°"},
+    {"pregunta": "Lados 8 cm y 5 cm con ángulo de 60°. Diagonal mayor del paralelogramo = ?", "respuesta": "√129 cm", "explicacion": "d² = 64 + 25 + 40 = 129 → √129 cm"},
+    {"pregunta": "Lados 13, 14 y 15 cm. Ángulo mayor = ?", "respuesta": "≈ 67.38°", "explicacion": "cos(C) = 5/13 → C ≈ 67.38°"}
 ]
 
-# --- RAZONES TRIGONOMÉTRICAS + ELEVACIÓN/DEPRESIÓN ---
 banco_trigonometria = [
-    {"categoria": "Valores básicos", "pregunta": "Calcula sen(30°)", "respuesta": "1/2", "explicacion": "sen(30°) = 1/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula cos(30°)", "respuesta": "√3/2", "explicacion": "cos(30°) = √3/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula sen(45°)", "respuesta": "√2/2", "explicacion": "sen(45°) = √2/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula cos(45°)", "respuesta": "√2/2", "explicacion": "cos(45°) = √2/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula sen(60°)", "respuesta": "√3/2", "explicacion": "sen(60°) = √3/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula cos(60°)", "respuesta": "1/2", "explicacion": "cos(60°) = 1/2."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula tan(30°)", "respuesta": "√3/3", "explicacion": "tan(30°) = sen(30°)/cos(30°) = √3/3."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula tan(45°)", "respuesta": "1", "explicacion": "tan(45°) = 1."},
-    {"categoria": "Valores básicos", "pregunta": "Calcula tan(60°)", "respuesta": "√3", "explicacion": "tan(60°) = √3."},
-    {"categoria": "Combinaciones", "pregunta": "2·sen(30°) + 3·cos(60°) = ?", "respuesta": "5/2", "explicacion": "= 2·(1/2) + 3·(1/2) = 1 + 3/2 = 5/2"},
-    {"categoria": "Combinaciones", "pregunta": "sen²(45°) + cos²(45°) = ?", "respuesta": "1", "explicacion": "= (√2/2)² + (√2/2)² = 1/2 + 1/2 = 1."},
-    {"categoria": "Combinaciones", "pregunta": "tan(60°) · cos(30°) = ?", "respuesta": "3/2", "explicacion": "= √3 · (√3/2) = 3/2"},
-    {"categoria": "📐 Ángulo de elevación", "pregunta": "Desde el suelo, se observa la cima de un árbol con un ángulo de elevación de 45°. Si estás a 12 m de su base, ¿cuál es la altura del árbol?", "respuesta": "12 m", "explicacion": "tan(45°) = h/12 → 1 = h/12 → h = 12 m"},
-    {"categoria": "📐 Ángulo de elevación", "pregunta": "Una escalera apoya en una pared formando 60° con el suelo. La base está a 4 m de la pared. ¿Qué altura alcanza?", "respuesta": "4√3 m", "explicacion": "tan(60°) = h/4 → √3 = h/4 → h = 4√3 m"},
-    {"categoria": "📐 Ángulo de elevación", "pregunta": "Se observa la cima de una torre con ángulo de elevación de 30°. La torre mide 10 m de alto. ¿A qué distancia está el observador?", "respuesta": "10√3 m", "explicacion": "tan(30°) = 10/d → d = 10 ÷ (√3/3) = 10√3 m"},
-    {"categoria": "📉 Ángulo de depresión", "pregunta": "Desde un faro de 30 m de altura, se observa un barco con ángulo de depresión de 45°. ¿A qué distancia está el barco?", "respuesta": "30 m", "explicacion": "Ángulo de depresión = ángulo de elevación → tan(45°) = 30/d → d = 30 m"},
-    {"categoria": "📉 Ángulo de depresión", "pregunta": "Desde un edificio de 18 m de alto, se observa un auto con ángulo de depresión de 60°. ¿Qué distancia horizontal hay?", "respuesta": "6√3 m", "explicacion": "tan(60°) = 18/d → √3 = 18/d → d = 6√3 m"},
-    {"categoria": "📉 Ángulo de depresión", "pregunta": "Desde un globo a 500 m de altura, se observa una aldea con ángulo de depresión de 30°. ¿Distancia en línea recta al globo?", "respuesta": "1000 m", "explicacion": "sen(30°) = 500/d → 1/2 = 500/d → d = 1000 m"}
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de sen(30°)?", "respuesta": "1/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de cos(30°)?", "respuesta": "√3/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de sen(45°)?", "respuesta": "√2/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de cos(45°)?", "respuesta": "√2/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de sen(60°)?", "respuesta": "√3/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de cos(60°)?", "respuesta": "1/2", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de tan(30°)?", "respuesta": "√3/3", "explicacion": "sen(30°)/cos(30°)"},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de tan(45°)?", "respuesta": "1", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Valores básicos", "pregunta": "¿Cuál es el valor de tan(60°)?", "respuesta": "√3", "explicacion": "Valor del ángulo notable."},
+    {"categoria": "Combinaciones", "pregunta": "Calcula: 2·sen(30°) + 3·cos(60°)", "respuesta": "5/2", "explicacion": "2·(1/2) + 3·(1/2) = 5/2"},
+    {"categoria": "Combinaciones", "pregunta": "Calcula: sen²(45°) + cos²(45°)", "respuesta": "1", "explicacion": "Identidad fundamental de la trigonometría."},
+    {"categoria": "Combinaciones", "pregunta": "Calcula: tan(60°) × cos(30°)", "respuesta": "3/2", "explicacion": "√3 × (√3/2) = 3/2"},
+    {"categoria": "📐 Ángulo de elevación", "pregunta": "Desde el suelo, a 12 m de la base de un árbol, se observa su cima con un ángulo de elevación de 45°. ¿Cuál es la altura del árbol?", "respuesta": "12 m", "explicacion": "tan(45°) = h/12 → h = 12 m"},
+    {"categoria": "📐 Ángulo de elevación", "pregunta": "Una escalera forma un ángulo de 60° con el suelo y su base está a 4 m de la pared. ¿Qué altura alcanza en la pared?", "respuesta": "4√3 m", "explicacion": "tan(60°) = h/4 → h = 4√3 m"},
+    {"categoria": "📐 Ángulo de elevación", "pregunta": "Desde el suelo se observa la cima de una torre de 10 m de altura con un ángulo de 30°. ¿A qué distancia está el observador de la base?", "respuesta": "10√3 m", "explicacion": "tan(30°) = 10/d → d = 10√3 m"},
+    {"categoria": "📉 Ángulo de depresión", "pregunta": "Desde un faro de 30 m de altura, se observa un barco con un ángulo de depresión de 45°. ¿A qué distancia está el barco?", "respuesta": "30 m", "explicacion": "Ángulo depresión = ángulo elevación → tan(45°) = 30/d → d = 30 m"},
+    {"categoria": "📉 Ángulo de depresión", "pregunta": "Desde la cima de un edificio de 18 m, se observa un punto en el suelo con ángulo de depresión de 60°. ¿Cuál es la distancia horizontal?", "respuesta": "6√3 m", "explicacion": "tan(60°) = 18/d → d = 6√3 m"},
+    {"categoria": "📉 Ángulo de depresión", "pregunta": "Un globo aerostático está a 500 m de altura. Se observa un pueblo con ángulo de depresión de 30°. ¿Cuál es la distancia en línea recta al pueblo?", "respuesta": "1000 m", "explicacion": "sen(30°) = 500/d → d = 1000 m"}
 ]
+
+banco_alternativas = [
+    {"pregunta": "¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?", "opciones": ["A) 16 cm²", "B) 30 cm²", "C) 60 cm²", "D) 120 cm²"], "respuesta_correcta": "B", "explicacion": "Área = (base × altura) ÷ 2 = (10 × 6) ÷ 2 = 30 cm²"},
+    {"pregunta": "¿Cuánto mide el tercer ángulo de un triángulo si los otros dos miden 50° y 60°?", "opciones": ["A) 70°", "B) 80°", "C) 90°", "D) 110°"], "respuesta_correcta": "A", "explicacion": "180° − 50° − 60° = 70°"},
+    {"pregunta": "En un triángulo rectángulo, los catetos miden 6 cm y 8 cm. ¿Cuánto mide la hipotenusa?", "opciones": ["A) 10 cm", "B) 12 cm", "C) 14 cm", "D) 100 cm"], "respuesta_correcta": "A", "explicacion": "c² = 6² + 8² = 36 + 64 = 100 → c = 10 cm"},
+    {"pregunta": "¿Qué valor tiene sen(30°)?", "opciones": ["A) 0", "B) 1/2", "C) √2/2", "D) √3/2"], "respuesta_correcta": "B", "explicacion": "sen(30°) = 1/2"},
+    {"pregunta": "Un triángulo con todos sus lados iguales se llama:", "opciones": ["A) Isósceles", "B) Escaleno", "C) Equilátero", "D) Rectángulo"], "respuesta_correcta": "C", "explicacion": "Equilátero = todos sus lados tienen la misma longitud"},
+    {"pregunta": "¿Cuánto mide cada ángulo de un triángulo equilátero?", "opciones": ["A) 30°", "B) 45°", "C) 60°", "D) 90°"], "respuesta_correcta": "C", "explicacion": "180° ÷ 3 = 60°"},
+    {"pregunta": "¿Cuál es el perímetro de un triángulo con lados de 5 cm, 7 cm y 9 cm?", "opciones": ["A) 21 cm", "B) 23 cm", "C) 112 cm", "D) 11.5 cm"], "respuesta_correcta": "B", "explicacion": "Perímetro = 5 + 7 + 9 = 23 cm"},
+    {"pregunta": "¿Qué valor tiene cos(60°)?", "opciones": ["A) 1/2", "B) √2/2", "C) √3/2", "D) 1"], "respuesta_correcta": "A", "explicacion": "cos(60°) = 1/2"},
+    {"pregunta": "Si un triángulo tiene un ángulo de 90°, se llama:", "opciones": ["A) Acutángulo", "B) Obtusángulo", "C) Rectángulo", "D) Equilátero"], "respuesta_correcta": "C", "explicacion": "Triángulo rectángulo = tiene un ángulo de 90°"},
+    {"pregunta": "Dos ángulos de un triángulo miden 35° y 55°. ¿Qué tipo de triángulo es?", "opciones": ["A) Acutángulo", "B) Rectángulo", "C) Obtusángulo", "D) Equilátero"], "respuesta_correcta": "B", "explicacion": "El tercer ángulo mide 90°, por lo tanto es rectángulo"},
+    {"pregunta": "¿Cuál de las siguientes opciones representa correctamente el Teorema de Pitágoras?", "opciones": ["A) a + b = c", "B) a² + b² = c²", "C) a² − b² = c²", "D) a × b = c²"], "respuesta_correcta": "B", "explicacion": "En un triángulo rectángulo: a² + b² = c², donde c es la hipotenusa"},
+    {"pregunta": "¿Qué valor tiene tan(45°)?", "opciones": ["A) 0", "B) 1/2", "C) 1", "D) √3"], "respuesta_correcta": "C", "explicacion": "tan(45°) = 1"},
+    {"pregunta": "Un triángulo tiene dos ángulos iguales. ¿Qué tipo es?", "opciones": ["A) Equilátero", "B) Isósceles", "C) Escaleno", "D) Rectángulo"], "respuesta_correcta": "B", "explicacion": "Isósceles = tiene dos ángulos y dos lados iguales"},
+    {"pregunta": "La suma de los tres ángulos de cualquier triángulo siempre es:", "opciones": ["A) 90°", "B) 180°", "C) 270°", "D) 360°"], "respuesta_correcta": "B", "explicacion": "Propiedad fundamental: la suma es siempre 180°"},
+    {"pregunta": "Desde el suelo, a 10 m de la base de un árbol, se observa su cima con un ángulo de 45°. ¿Cuál es su altura?", "opciones": ["A) 5 m", "B) 10 m", "C) 15 m", "D) 20 m"], "respuesta_correcta": "B", "explicacion": "tan(45°) = h/10 → 1 = h/10 → h = 10 m"},
+    {"pregunta": "Un triángulo tiene ángulos de 100°, 50° y 30°. ¿De qué tipo es?", "opciones": ["A) Rectángulo", "B) Acutángulo", "C) Obtusángulo", "D) Equilátero"], "respuesta_correcta": "C", "explicacion": "Tiene un ángulo mayor a 90°, por lo tanto es obtusángulo"},
+    {"pregunta": "¿Qué fórmula permite calcular el área de un triángulo?", "opciones": ["A) base × altura", "B) (base + altura)/2", "C) (base × altura)/2", "D) perímetro/2"], "respuesta_correcta": "C", "explicacion": "Área = (base × altura) ÷ 2"},
+    {"pregunta": "Si la hipotenusa mide 13 cm y un cateto mide 5 cm, ¿cuánto mide el otro cateto?", "opciones": ["A) 8 cm", "B) 10 cm", "C) 12 cm", "D) 18 cm"], "respuesta_correcta": "C", "explicacion": "b² = 13² − 5² = 169 − 25 = 144 → b = 12 cm"},
+    {"pregunta": "¿Qué valor tiene sen(60°)?", "opciones": ["A) 1/2", "B) √2/2", "C) √3/2", "D) 1"], "respuesta_correcta": "C", "explicacion": "sen(60°) = √3/2"},
+    {"pregunta": "Un triángulo con lados de 3 cm, 4 cm y 5 cm es:", "opciones": ["A) Equilátero", "B) Isósceles", "C) Rectángulo", "D) Obtusángulo"], "respuesta_correcta": "C", "explicacion": "3² + 4² = 5² → cumple el teorema de Pitágoras ✅"}
+]
+
+# ============== ESTILOS PDF PROFESIONAL ==============
+def crear_estilos():
+    estilos = getSampleStyleSheet()
+    estilo_titulo = ParagraphStyle(
+        'Titulo', parent=estilos['Title'], fontSize=18, spaceAfter=16,
+        textColor=colors.HexColor('#1F4E79'), alignment=1, bold=True
+    )
+    estilo_subtitulo = ParagraphStyle(
+        'Subtitulo', parent=estilos['Heading2'], fontSize=12, spaceAfter=10,
+        textColor=colors.HexColor('#2E86AB'), alignment=1
+    )
+    estilo_normal = ParagraphStyle(
+        'Normal', parent=estilos['Normal'], fontSize=11, spaceAfter=8, leading=14
+    )
+    estilo_pregunta = ParagraphStyle(
+        'Pregunta', parent=estilos['Normal'], fontSize=11, spaceAfter=6, leading=14, bold=True
+    )
+    estilo_respuesta = ParagraphStyle(
+        'Respuesta', parent=estilos['Normal'], fontSize=11, spaceAfter=6,
+        textColor=colors.HexColor('#28A745'), leading=14
+    )
+    estilo_explicacion = ParagraphStyle(
+        'Explicacion', parent=estilos['Normal'], fontSize=10, spaceAfter=10,
+        textColor=colors.HexColor('#6C757D'), leading=13, leftIndent=15
+    )
+    return {
+        'titulo': estilo_titulo, 'subtitulo': estilo_subtitulo, 'normal': estilo_normal,
+        'pregunta': estilo_pregunta, 'respuesta': estilo_respuesta, 'explicacion': estilo_explicacion
+    }
+
+# ============== GENERAR PDF DE ALTERNATIVAS ==============
+def generar_pdf_alternativas(preguntas, titulo, fecha, con_respuestas=False):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
+                          leftMargin=2*cm, rightMargin=2*cm)
+    estilos = crear_estilos()
+    elementos = []
+    
+    # Encabezado
+    elementos.append(Paragraph(titulo, estilos['titulo']))
+    elementos.append(Paragraph(f"Fecha: {fecha}", estilos['subtitulo']))
+    if not con_respuestas:
+        datos = [["Nombre: ___________________________________________", "Curso: _______________"]]
+        tabla_datos = Table(datos, colWidths=[13*cm, 5*cm])
+        tabla_datos.setStyle(TableStyle([
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#CCCCCC')),
+            ('PADDING', (0, 0), (-1, -1), 8),
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#F8F9FA'))
+        ]))
+        elementos.append(tabla_datos)
+        elementos.append(Spacer(1, 0.5*cm))
+        elementos.append(Paragraph("Instrucciones: Selecciona la alternativa correcta para cada pregunta.", estilos['normal']))
+    else:
+        elementos.append(Paragraph("SOLUCIONARIO — Respuestas y explicaciones", estilos['subtitulo']))
+    elementos.append(Spacer(1, 0.5*cm))
+    
+    # Línea separadora
+    linea = Table([[""]], colWidths=[17*cm], rowHeights=[1])
+    linea.setStyle(TableStyle([('LINE', (0, 0), (-1, -1), 1, colors.HexColor('#1F4E79'))]))
+    elementos.append(linea)
+    elementos.append(Spacer(1, 0.5*cm))
+    
+    # Preguntas
+    for i, p in enumerate(preguntas, 1):
+        elementos.append(Paragraph(f"<b>{i}.</b> {p['pregunta']}", estilos['pregunta']))
+        for opcion in p['opciones']:
+            elementos.append(Paragraph(f"&nbsp;&nbsp;{opcion}", estilos['normal']))
+        if con_respuestas:
+            elementos.append(Paragraph(f"✅ <b>Respuesta correcta:</b> {p['respuesta_correcta']}", estilos['respuesta']))
+            elementos.append(Paragraph(f"💡 {p['explicacion']}", estilos['explicacion']))
+        elementos.append(Spacer(1, 0.3*cm))
+    
+    doc.build(elementos)
+    buffer.seek(0)
+    return buffer
+
+# ============== GENERAR PDF DE DESARROLLO ==============
+def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
+                          leftMargin=2*cm, rightMargin=2*cm)
+    estilos = crear_estilos()
+    elementos = []
+    
+    elementos.append(Paragraph(titulo, estilos['titulo']))
+    elementos.append(Paragraph(f"Fecha: {fecha}", estilos['subtitulo']))
+    if not con_respuestas:
+        datos = [["Nombre: ___________________________________________", "Curso: _______________"]]
+        tabla_datos = Table(datos, colWidths=[13*cm, 5*cm])
+        tabla_datos.setStyle(TableStyle([
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#CCCCCC')),
+            ('PADDING', (0, 0), (-1, -1), 8),
+            ('BACKGROUND', (0, 0), (-1, -1), colors.HexColor('#F8F9FA'))
+        ]))
+        elementos.append(tabla_datos)
+        elementos.append(Spacer(1, 0.5*cm))
+        elementos.append(Paragraph("Instrucciones: Resuelve cada ejercicio en el espacio indicado.", estilos['normal']))
+    else:
+        elementos.append(Paragraph("SOLUCIONARIO — Respuestas y explicaciones", estilos['subtitulo']))
+    elementos.append(Spacer(1, 0.5*cm))
+    
+    linea = Table([[""]], colWidths=[17*cm], rowHeights=[1])
+    linea.setStyle(TableStyle([('LINE', (0, 0), (-1, -1), 1, colors.HexColor('#1F4E79'))]))
+    elementos.append(linea)
+    elementos.append(Spacer(1, 0.5*cm))
+    
+    for i, p in enumerate(preguntas, 1):
+        elementos.append(Paragraph(f"<b>{i}.</b> {p['pregunta']}", estilos['pregunta']))
+        if con_respuestas:
+            elementos.append(Paragraph(f"✅ <b>Respuesta:</b> {p['respuesta']}", estilos['respuesta']))
+            elementos.append(Paragraph(f"💡 {p['explicacion']}", estilos['explicacion']))
+        else:
+            elementos.append(Spacer(1, 1.5*cm))
+            linea_resp = Table([[""]], colWidths=[16*cm], rowHeights=[1])
+            linea_resp.setStyle(TableStyle([('LINE', (0, 0), (-1, -1), 1, colors.HexColor('#CCCCCC'))]))
+            elementos.append(linea_resp)
+        elementos.append(Spacer(1, 0.4*cm))
+    
+    doc.build(elementos)
+    buffer.seek(0)
+    return buffer
 
 # ============== FUNCIONES AUXILIARES ==============
 def inicializar_sesion(clave, valor_inicial):
@@ -240,79 +254,15 @@ def mostrar_banco(titulo, banco, clave_sesion):
             st.rerun()
     st.caption(f"Pregunta {idx+1} de {len(banco)}")
 
-# ============== GENERAR PDF ==============
-def generar_pdf_sin_respuestas(titulo, preguntas, fecha):
-    from io import BytesIO
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    styles = getSampleStyleSheet()
-    elementos = []
-    
-    # Encabezado
-    elementos.append(Paragraph(titulo, styles["Title"]))
-    elementos.append(Spacer(1, 12))
-    elementos.append(Paragraph(f"Fecha: {fecha}", styles["Normal"]))
-    elementos.append(Paragraph("Alumno: __________________________    Curso: _______________", styles["Normal"]))
-    elementos.append(Spacer(1, 20))
-    elementos.append(Paragraph("=" * 60, styles["Normal"]))
-    elementos.append(Spacer(1, 12))
-    elementos.append(Paragraph("EJERCICIOS:", styles["Heading2"]))
-    elementos.append(Spacer(1, 12))
-    
-    # Preguntas
-    for i, p in enumerate(preguntas, 1):
-        texto = f"{i}. {p['pregunta']}"
-        elementos.append(Paragraph(texto, styles["Normal"]))
-        elementos.append(Spacer(1, 6))
-        elementos.append(Paragraph("Respuesta: ___________________", styles["Normal"]))
-        elementos.append(Spacer(1, 12))
-        elementos.append(Paragraph("-" * 50, styles["Normal"]))
-        elementos.append(Spacer(1, 12))
-    
-    doc.build(elementos)
-    buffer.seek(0)
-    return buffer
-
-def generar_pdf_con_respuestas(titulo, preguntas, fecha):
-    from io import BytesIO
-    buffer = BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter)
-    styles = getSampleStyleSheet()
-    elementos = []
-    
-    # Encabezado
-    elementos.append(Paragraph(f"{titulo} — SOLUCIONARIO", styles["Title"]))
-    elementos.append(Spacer(1, 12))
-    elementos.append(Paragraph(f"Fecha: {fecha}", styles["Normal"]))
-    elementos.append(Spacer(1, 12))
-    elementos.append(Paragraph("=" * 60, styles["Normal"]))
-    elementos.append(Spacer(1, 12))
-    elementos.append(Paragraph("RESPUESTAS Y EXPLICACIONES:", styles["Heading2"]))
-    elementos.append(Spacer(1, 12))
-    
-    # Preguntas con respuestas
-    for i, p in enumerate(preguntas, 1):
-        texto = f"<b>{i}.</b> {p['pregunta']}"
-        elementos.append(Paragraph(texto, styles["Normal"]))
-        elementos.append(Spacer(1, 4))
-        elementos.append(Paragraph(f"✅ <b>Respuesta:</b> {p['respuesta']}", styles["Normal"]))
-        elementos.append(Paragraph(f"💡 {p['explicacion']}", styles["Normal"]))
-        elementos.append(Spacer(1, 12))
-        elementos.append(Paragraph("-" * 50, styles["Normal"]))
-        elementos.append(Spacer(1, 12))
-    
-    doc.build(elementos)
-    buffer.seek(0)
-    return buffer
-
-# ============== PESTAÑAS PRINCIPALES ==============
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+# ============== PESTAÑAS ==============
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📏 Área y Perímetro",
     "📐 Ángulos del Triángulo",
     "📐 Teorema de Pitágoras",
     "📐 Ley de Cosenos",
     "🔺 Razones Trigonométricas",
-    "📄 Generar Prueba PDF"
+    "📝 Prueba Alternativas",
+    "📄 Generar Prueba"
 ])
 
 with tab1:
@@ -324,82 +274,119 @@ with tab2:
 with tab3:
     mostrar_banco("📐 Teorema de Pitágoras", banco_pitagoras, "pitagoras")
     st.divider()
-    st.info("💡 Teorema: En un triángulo rectángulo → a² + b² = c², donde c es la hipotenusa.")
+    st.info("💡 Teorema: a² + b² = c²")
 
 with tab4:
     mostrar_banco("📐 Ley de Cosenos", banco_cosenos, "cosenos")
     st.divider()
     st.latex(r"c^2 = a^2 + b^2 - 2ab \cdot \cos(C)")
-    st.caption("Donde C es el ángulo comprendido entre los lados a y b")
 
 with tab5:
     st.header("🔺 Razones Trigonométricas — Ángulos Notables")
-    with st.expander("📋 Tabla de valores — Ver / Ocultar"):
+    with st.expander("📋 Tabla de valores"):
         st.markdown("""
 | Ángulo θ | sen(θ) | cos(θ) | tan(θ) |
 |----------|--------|--------|--------|
 | **30°**  | 1/2    | √3/2   | √3/3   |
 | **45°**  | √2/2   | √2/2   | 1      |
 | **60°**  | √3/2   | 1/2    | √3     |
-
-> 💡 **Ángulo de elevación**: desde el suelo hacia arriba  
-> 💡 **Ángulo de depresión**: desde arriba hacia abajo = ángulo de elevación desde el objeto
 """)
     st.divider()
     mostrar_banco("", banco_trigonometria, "trigo")
 
 with tab6:
-    st.header("📄 Generar Prueba en PDF")
-    st.info("Selecciona los temas y genera una prueba lista para imprimir en formato PDF, con y sin respuestas.")
+    st.header("📝 Generar Prueba de Alternativas")
+    st.info("Selecciona la cantidad de preguntas y genera una prueba con alternativas + solucionario en PDF.")
     
-    temas_seleccion = st.multiselect(
-        "Selecciona los temas para tu prueba:",
-        ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas"]
-    )
-    
-    cant_preg = st.slider("Cantidad de ejercicios por tema:", 2, 6, 4)
-    nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación — Triángulos y Trigonometría")
+    cant_alt = st.slider("Cantidad de preguntas:", 3, len(banco_alternativas), 10, key="cant_alt")
+    nombre_alt = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Triángulos", key="nombre_alt")
     fecha_hoy = datetime.now().strftime("%d/%m/%Y")
     
-    if st.button("📄 Generar Pruebas en PDF", type="primary"):
+    if st.button("📄 Generar PDF de Alternativas", type="primary", key="gen_alt"):
+        prueba_alt = random.sample(banco_alternativas, cant_alt)
+        random.shuffle(prueba_alt)
+        
+        pdf_prueba = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=False)
+        pdf_sol = generar_pdf_alternativas(prueba_alt, nombre_alt, fecha_hoy, con_respuestas=True)
+        
+        st.success(f"✅ ¡Prueba generada con {len(prueba_alt)} preguntas! Descarga tus archivos a continuación:")
+        
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.download_button(
+                "📥 Descargar PRUEBA (.pdf)",
+                data=pdf_prueba,
+                file_name=f"Prueba_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
+                mime="application/pdf"
+            )
+        with col_b:
+            st.download_button(
+                "📥 Descargar SOLUCIONARIO (.pdf)",
+                data=pdf_sol,
+                file_name=f"Solucionario_Alternativas_{datetime.now().strftime('%Y%m%d')}.pdf",
+                mime="application/pdf"
+            )
+        
+        st.divider()
+        st.subheader("👁️ Vista previa de la prueba:")
+        for i, p in enumerate(prueba_alt, 1):
+            st.markdown(f"**{i}.** {p['pregunta']}")
+            for op in p["opciones"]:
+                st.write(f"   {op}")
+            st.markdown(f"*Respuesta correcta: **{p['respuesta_correcta']}***")
+            st.divider()
+
+with tab7:
+    st.header("📄 Generar Prueba de Desarrollo")
+    st.info("Selecciona los temas y genera una prueba con ejercicios de desarrollo + solucionario en PDF.")
+    
+    temas_seleccion = st.multiselect(
+        "Selecciona los temas:",
+        ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas"],
+        key="temas_dev"
+    )
+    
+    cant_preg = st.slider("Cantidad de ejercicios por tema:", 2, 6, 4, key="cant_dev")
+    nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Triángulos y Trigonometría", key="nombre_dev")
+    fecha_hoy = datetime.now().strftime("%d/%m/%Y")
+    
+    mapeo_bancos = {
+        "Área y Perímetro": banco_area_perimetro,
+        "Ángulos del Triángulo": banco_angulos,
+        "Teorema de Pitágoras": banco_pitagoras,
+        "Ley de Cosenos": banco_cosenos,
+        "Razones Trigonométricas": banco_trigonometria
+    }
+    
+    if st.button("📄 Generar PDF de Desarrollo", type="primary", key="gen_dev"):
         if not temas_seleccion:
             st.warning("⚠️ Selecciona al menos un tema")
         else:
             prueba_preguntas = []
-            mapeo_bancos = {
-                "Área y Perímetro": banco_area_perimetro,
-                "Ángulos del Triángulo": banco_angulos,
-                "Teorema de Pitágoras": banco_pitagoras,
-                "Ley de Cosenos": banco_cosenos,
-                "Razones Trigonométricas": banco_trigonometria
-            }
-            
             for tema in temas_seleccion:
                 banco = mapeo_bancos[tema]
                 seleccion = random.sample(banco, min(cant_preg, len(banco)))
                 prueba_preguntas.extend(seleccion)
-            
             random.shuffle(prueba_preguntas)
             
-            # Generar PDFs
-            pdf_sin = generar_pdf_sin_respuestas(nombre_prueba, prueba_preguntas, fecha_hoy)
-            pdf_con = generar_pdf_con_respuestas(nombre_prueba, prueba_preguntas, fecha_hoy)
+            pdf_prueba = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=False)
+            pdf_sol = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, con_respuestas=True)
             
-            st.success(f"✅ Prueba generada con {len(prueba_preguntas)} ejercicios")
+            st.success(f"✅ ¡Prueba generada con {len(prueba_preguntas)} ejercicios! Descarga tus archivos a continuación:")
             
             col_a, col_b = st.columns(2)
             with col_a:
                 st.download_button(
-                    label="📥 Descargar PRUEBA (.pdf)",
-                    data=pdf_sin,
-                    file_name=f"Prueba_sin_respuestas_{datetime.now().strftime('%Y%m%d')}.pdf",
+                    "📥 Descargar PRUEBA (.pdf)",
+                    data=pdf_prueba,
+                    file_name=f"Prueba_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
                     mime="application/pdf"
                 )
             with col_b:
                 st.download_button(
-                    label="📥 Descargar SOLUCIONARIO (.pdf)",
-                    data=pdf_con,
-                    file_name=f"Solucionario_{datetime.now().strftime('%Y%m%d')}.pdf",
+                    "📥 Descargar SOLUCIONARIO (.pdf)",
+                    data=pdf_sol,
+                    file_name=f"Solucionario_Desarrollo_{datetime.now().strftime('%Y%m%d')}.pdf",
                     mime="application/pdf"
                 )
             
@@ -411,4 +398,4 @@ with tab6:
                 st.divider()
 
 st.divider()
-st.caption("💡 Cada ejercicio se genera aleatoriamente. ¡Buena suerte estudiando! 🧠✨")
+st.caption("💡 Los archivos se descargan directamente en PDF con diseño profesional. ¡Buena suerte! 🧠✨")
