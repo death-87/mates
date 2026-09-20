@@ -630,24 +630,3 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 
 st.divider()
 st.caption("💡 Banco de ejercicios 2° Medio — Basado en el programa oficial PPT")
-
-
----
-
-### Resumen de cambios:
-1. **Clases explicativas agregadas:** Se incorporó un bloque descriptivo `st.expander("📚 CLASE EXPLICATIVA: ...")` en cada una de las 7 secciones del menú de Streamlit con las definiciones teóricas, gráficos y fórmulas del PPT.
-2. **Generación de PDF preservada:** La función `generar_pdf_desarrollo()` continúa utilizando únicamente los bancos de preguntas (`banco_sec1_definiciones`, etc.), asegurando que el PDF generado contenga exclusivamente la evaluación limpia para los estudiantes y su solucionario.Sí, es totalmente posible estructurar el contenido para que incluya explicaciones o guías teóricas que no aparezcan al exportar o generar el PDF final.
-
-Dependiendo de las herramientas o del entorno de trabajo que estés utilizando para redactar tu documento, existen diferentes métodos para lograrlo:
-
----
-
-### Opción 1: Uso de Bloques Ocultos / Comentarios
-Si redactas en formatos como **Markdown**, **HTML** o compiladores basados en texto (como **LaTeX**), puedes envolver la enseñanza en bloques de comentarios o condicionales.
-
-* **Markdown / HTML:**
-  ```html
-  <!-- 
-  [CLASE EXPLICATIVA / NOTA PARA EL DOCENTE]
-  Aquí va el resumen conceptual o la enseñanza antes de las preguntas.
-  -->
