@@ -13,7 +13,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 st.set_page_config(page_title="📐 Matemáticas — Triángulos", layout="wide")
 
 
-# ============== BANCOS DE PREGUNTAS (Sin cambios) ==============
+# ============== BANCOS DE PREGUNTAS ==============
 
 banco_area_perimetro = [
     {"pregunta": "Un triángulo tiene base 12 cm y altura 8 cm. Calcula su área.", "respuesta": "48 cm²", "explicacion": "Área = (12 × 8) ÷ 2 = 48 cm²"},
@@ -80,6 +80,64 @@ banco_trigonometria = [
     {"categoria": "📉 Ángulo de depresión", "pregunta": "Un globo aerostático está a 500 m de altura. Se observa un pueblo con ángulo de depresión de 30°. ¿Cuál es la distancia en línea recta al pueblo?", "respuesta": "1000 m", "explicacion": "sen(30°) = 500/d → d = 1000 m"}
 ]
 
+# NUEVO BANCO DE EJERCICIOS EXTRACTADOS DEL PPT DE 2° MEDIO
+banco_guia_2medio = [
+    {
+        "categoria": "Razones en Triángulo Rectángulo",
+        "pregunta": "En un triángulo rectángulo con catetos a = 8 cm, b = 15 cm e hipotenusa c = 17 cm, halla las razones sen(β), cos(β) y tan(β) para el ángulo β (opuesto al cateto b = 15 cm).",
+        "respuesta": "sen(β) = 15/17, cos(β) = 8/17, tan(β) = 15/8",
+        "explicacion": "sen(β) = Cateto Opuesto / Hipotenusa = 15/17. cos(β) = Cateto Adyacente / Hipotenusa = 8/17. tan(β) = Cateto Opuesto / Cateto Adyacente = 15/8."
+    },
+    {
+        "categoria": "Teorema de Pitágoras y Razones",
+        "pregunta": "Dado un triángulo rectángulo ABC con cateto BC = 4 y cateto AC = 3 (ángulo recto en C). Calcula la hipotenusa AB y las razones sen(α) y cos(α) para el ángulo α en el vértice A.",
+        "respuesta": "AB = 5, sen(α) = 4/5, cos(α) = 3/5",
+        "explicacion": "AB = √(3² + 4²) = √25 = 5. Para el ángulo α en A: cateto opuesto = 4, cateto adyacente = 3, hipotenusa = 5."
+    },
+    {
+        "categoria": "Triángulos Notables (37°-53°)",
+        "pregunta": "En un triángulo rectángulo notable de 37°-53° (proporción 3k:4k:5k), si la hipotenusa mide 15 cm, calcula la longitud de ambos catetos.",
+        "respuesta": "Cateto menor = 9 cm, Cateto mayor = 12 cm",
+        "explicacion": "Hipotenusa = 5k = 15 → k = 3. Cateto opuesto a 37° = 3k = 9 cm. Cateto opuesto a 53° = 4k = 12 cm."
+    },
+    {
+        "categoria": "Triángulos Notables (30°-60°)",
+        "pregunta": "En un triángulo rectángulo con ángulos agudos de 30° y 60°, la hipotenusa mide 16 mm. ¿Cuánto miden los catetos?",
+        "respuesta": "Cateto menor (opuesto a 30°) = 8 mm, Cateto mayor (opuesto a 60°) = 8√3 mm",
+        "explicacion": "En el triángulo 30°-60°: hipotenusa = 2k = 16 mm → k = 8 mm. Cateto menor = 8 mm, cateto mayor = 8√3 mm."
+    },
+    {
+        "categoria": "Triángulos Notables (45°-45°)",
+        "pregunta": "En un triángulo rectángulo isósceles con ángulos de 45°, la hipotenusa mide 7√2 cm. Encuentra la longitud de sus catetos x.",
+        "respuesta": "x = 7 cm",
+        "explicacion": "Hipotenusa = k√2 = 7√2 cm → k = 7 cm. Por lo tanto, cada cateto mide 7 cm."
+    },
+    {
+        "categoria": "Operaciones Combinadas",
+        "pregunta": "Calcula el valor numérico de la expresión: B = [tan(60°) + 3·cos(30°)] ÷ [sen(45°)]²",
+        "respuesta": "5√3",
+        "explicacion": "tan(60°) = √3; cos(30°) = √3/2; sen(45°) = √2/2. Numerador = √3 + 3(√3/2) = 5√3/2. Denominador = (√2/2)² = 1/2. Resultado = (5√3/2) ÷ (1/2) = 5√3."
+    },
+    {
+        "categoria": "Ángulo de Depresión — La Torre",
+        "pregunta": "La medida del ángulo de depresión desde lo alto de una torre de 34 m de altura hasta un punto K en el suelo es de 80°. Calcula la distancia aproximada del punto K a la base de la torre.",
+        "respuesta": "≈ 6 metros",
+        "explicacion": "El ángulo interno superior es 90° − 80° = 10°. Aplicando tangente: tan(10°) = x / 34 → x = 34 · tan(10°) ≈ 34 · 0,1763 ≈ 6 m."
+    },
+    {
+        "categoria": "Ángulo de Elevación — La Araucaria",
+        "pregunta": "Antonia observa el punto más alto de una araucaria con un ángulo de elevación de 60° respecto del nivel de sus ojos. Ella mide 1,60 m de estatura y está a 21 m de la base. ¿Cuál es la altura total de la araucaria?",
+        "respuesta": "≈ 38 m (o 37,97 m)",
+        "explicacion": "Altura desde la vista = 21 · tan(60°) = 21√3 ≈ 36,37 m. Altura total = 36,37 m + 1,60 m = 37,97 m ≈ 38 m."
+    },
+    {
+        "categoria": "Ángulo de Depresión — El Avión",
+        "pregunta": "Un avión se encuentra a 1 700 m de altura cuando comienza su descenso para aterrizar con un ángulo de depresión de 25°. ¿A qué distancia (en línea visual) se encuentra de la pista?",
+        "respuesta": "≈ 4 022,7 metros",
+        "explicacion": "sen(25°) = 1700 / x → x = 1700 / sen(25°) ≈ 1700 / 0,4226 ≈ 4022,7 m."
+    }
+]
+
 banco_alternativas = [
     {"pregunta": "¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?", "opciones": ["A) 16 cm²", "B) 30 cm²", "C) 60 cm²", "D) 120 cm²"], "respuesta_correcta": "B", "explicacion": "Área = (base × altura) ÷ 2 = (10 × 6) ÷ 2 = 30 cm²"},
     {"pregunta": "¿Cuánto mide el tercer ángulo de un triángulo si los otros dos miden 50° y 60°?", "opciones": ["A) 70°", "B) 80°", "C) 90°", "D) 110°"], "respuesta_correcta": "A", "explicacion": "180° − 50° − 60° = 70°"},
@@ -103,7 +161,7 @@ banco_alternativas = [
     {"pregunta": "Un triángulo con lados de 3 cm, 4 cm y 5 cm es:", "opciones": ["A) Equilátero", "B) Isósceles", "C) Rectángulo", "D) Obtusángulo"], "respuesta_correcta": "C", "explicacion": "3² + 4² = 5² → cumple el teorema de Pitágoras ✅"}
 ]
 
-# ============== ESTILOS PDF PROFESIONAL (Sin cambios) ==============
+# ============== ESTILOS PDF PROFESIONAL ==============
 def crear_estilos():
     estilos = getSampleStyleSheet()
     estilo_titulo = ParagraphStyle(
@@ -133,11 +191,11 @@ def crear_estilos():
         'pregunta': estilo_pregunta, 'respuesta': estilo_respuesta, 'explicacion': estilo_explicacion
     }
 
-# ============== GENERAR PDF DE ALTERNATIVAS (Sin cambios) ==============
+# ============== GENERAR PDF DE ALTERNATIVAS ==============
 def generar_pdf_alternativas(preguntas, titulo, fecha, con_respuestas=False):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
-                          leftMargin=2*cm, rightMargin=2*cm)
+                            leftMargin=2*cm, rightMargin=2*cm)
     estilos = crear_estilos()
     elementos = []
     
@@ -179,11 +237,11 @@ def generar_pdf_alternativas(preguntas, titulo, fecha, con_respuestas=False):
     buffer.seek(0)
     return buffer
 
-# ============== GENERAR PDF DE DESARROLLO (Sin cambios) ==============
+# ============== GENERAR PDF DE DESARROLLO ==============
 def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=2*cm, bottomMargin=2*cm,
-                          leftMargin=2*cm, rightMargin=2*cm)
+                            leftMargin=2*cm, rightMargin=2*cm)
     estilos = crear_estilos()
     elementos = []
     
@@ -225,7 +283,7 @@ def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
     buffer.seek(0)
     return buffer
 
-# ============== FUNCIONES AUXILIARES (Sin cambios) ==============
+# ============== FUNCIONES AUXILIARES ==============
 def inicializar_sesion(clave, valor_inicial):
     if clave not in st.session_state:
         st.session_state[clave] = valor_inicial
@@ -258,7 +316,7 @@ def mostrar_banco(titulo, banco, clave_sesion):
     st.caption(f"Pregunta {idx+1} de {len(banco)}")
 
 # =============================================================
-# ============== ✅ NUEVO DASHBOARD (SIDEBAR) ✅ ==============
+# ============== ✅ DASHBOARD (SIDEBAR) ✅ =====================
 # =============================================================
 
 with st.sidebar:
@@ -271,7 +329,6 @@ with st.sidebar:
     if os.path.exists(ruta_imagen):
         st.image(ruta_imagen, use_container_width=True, caption="Panel de Control")
     else:
-        # Mensaje de error amigable si no encuentra la foto
         st.error(f"⚠️ No se encontró la imagen: {ruta_imagen}")
         st.info("Asegúrate de que la foto esté en la misma carpeta que este script.")
     
@@ -288,6 +345,7 @@ with st.sidebar:
             "📐 Teorema de Pitágoras",
             "📐 Ley de Cosenos",
             "🔺 Razones Trigonométricas",
+            "📘 Guía 2° Medio — Razones Trigonométricas",
             "📝 Prueba Alternativas",
             "📄 Generar Prueba Desarrollo"
         ],
@@ -295,7 +353,7 @@ with st.sidebar:
     )
     
     st.divider()
-    st.caption("💡 Banco de ejercicios v1.0")
+    st.caption("💡 Banco de ejercicios v1.1 — 2° Medio")
 
 # ===============================================================
 # ============== LÓGICA DE VISUALIZACIÓN PRINCIPAL ==============
@@ -310,7 +368,7 @@ if opcion_menu == "🏠 Inicio":
     st.markdown("""
     Utiliza el menú de la izquierda (**Dashboard**) para navegar por las distintas secciones:
     
-    *   **Práctica Interactiva:** Repasa ejercicios de las 5 categorías matemáticas.
+    *   **Práctica Interactiva:** Repasa ejercicios de geometría y trigonometría, incluyendo el módulo **Guía 2° Medio**.
     *   **Generación de Evaluaciones:** Crea pruebas en PDF (Alternativas o Desarrollo) con su respectivo solucionario listos para imprimir.
     """)
     st.info("Selecciona un tema en el menú para comenzar.")
@@ -344,11 +402,15 @@ elif opcion_menu == "🔺 Razones Trigonométricas":
     st.divider()
     mostrar_banco("", banco_trigonometria, "trigo")
 
+elif opcion_menu == "📘 Guía 2° Medio — Razones Trigonométricas":
+    st.header("📘 Ejercicios de Razones Trigonométricas (2° Medio)")
+    st.info("Ejercicios basados en el programa oficial de 2° Medio: razones trigonométricas, triángulos notables (30°-60°, 45°-45°, 37°-53°) y problemas de elevación/depresión.")
+    mostrar_banco("", banco_guia_2medio, "guia2medio")
+
 elif opcion_menu == "📝 Prueba Alternativas":
     st.header("📝 Generar Prueba de Alternativas")
     st.info("Selecciona la cantidad de preguntas y genera una prueba con alternativas + solucionario en PDF.")
     
-    # Contenedor para organizar mejor
     with st.container(border=True):
         col_config1, col_config2 = st.columns(2)
         with col_config1:
@@ -391,7 +453,6 @@ elif opcion_menu == "📝 Prueba Alternativas":
             st.subheader("👁️ Vista previa rápida de preguntas:")
             for i, p in enumerate(prueba_alt, 1):
                 st.markdown(f"**{i}.** {p['pregunta']}")
-                # Mostrar solo la primera opción como demo en vista previa
                 st.caption(f"Demo opciones: {p['opciones'][0]} ...")
 
 elif opcion_menu == "📄 Generar Prueba Desarrollo":
@@ -401,16 +462,16 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
     with st.container(border=True):
         temas_seleccion = st.multiselect(
             "Selecciona los temas a incluir:",
-            ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas"],
-            default=["Área y Perímetro", "Teorema de Pitágoras"],
+            ["Área y Perímetro", "Ángulos del Triángulo", "Teorema de Pitágoras", "Ley de Cosenos", "Razones Trigonométricas", "Guía 2° Medio"],
+            default=["Área y Perímetro", "Teorema de Pitágoras", "Guía 2° Medio"],
             key="temas_dev"
         )
         
         col_c1, col_c2 = st.columns(2)
         with col_c1:
-            cant_preg = st.slider("Ejercicios por tema:", 1, 8, 4, key="cant_dev")
+            cant_preg = st.slider("Ejercicios por tema:", 1, 8, 3, key="cant_dev")
         with col_c2:
-            nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Desarrollo — Triángulos", key="nombre_dev")
+            nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Desarrollo — Triángulos y Trigonometría", key="nombre_dev")
         
         fecha_hoy = datetime.now().strftime("%d/%m/%Y")
         btn_generar_dev = st.button("📄 Generar Archivos PDF", type="primary", key="gen_dev")
@@ -420,7 +481,8 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
         "Ángulos del Triángulo": banco_angulos,
         "Teorema de Pitágoras": banco_pitagoras,
         "Ley de Cosenos": banco_cosenos,
-        "Razones Trigonométricas": banco_trigonometria
+        "Razones Trigonométricas": banco_trigonometria,
+        "Guía 2° Medio": banco_guia_2medio
     }
     
     if btn_generar_dev:
@@ -431,10 +493,8 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
                 prueba_preguntas = []
                 for tema in temas_seleccion:
                     banco = mapeo_bancos[tema]
-                    # Ajuste de seguridad por si pides más preguntas de las que existen
                     cantidad_real = min(cant_preg, len(banco))
                     seleccion = random.sample(banco, cantidad_real)
-                    # Añadir info del tema a la pregunta para la vista previa
                     for sp in seleccion:
                         sp['_tema'] = tema
                     prueba_preguntas.extend(seleccion)
@@ -466,7 +526,7 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
                 
                 st.divider()
                 st.subheader("👁️ Vista previa rápida:")
-                for i, p in enumerate(prueba_preguntas[:5], 1): # Muestra max 5 en vista previa
+                for i, p in enumerate(prueba_preguntas[:5], 1):
                     st.markdown(f"**{i}.** [{p.get('_tema', '')}] {p['pregunta']}")
                 if len(prueba_preguntas) > 5:
                     st.caption(f"... y {len(prueba_preguntas)-5} ejercicios más en el PDF.")
@@ -474,3 +534,26 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 # Pie de página final
 st.divider()
 st.caption("💡 Los archivos se descargan directamente en PDF con diseño profesional. ¡Buena suerte! 🧠✨")
+```eoc
+
+### Instrucciones rápidas para subirlo a GitHub:
+1. Reemplaza todo el contenido de tu archivo local `catamate.py` con el código generado arriba.
+2. Abre la terminal en el directorio del proyecto y ejecuta:
+   
+```bash
+   git add catamate.py
+   git commit -m "Add 2° Medio Trigonometry question bank and dashboard section"
+   git push origin main
+   ```El código Python estructurado con **Streamlit** y **ReportLab** para la generación de evaluaciones en PDF está bien construido. 
+
+Analizando el código, se identifican un par de **puntos de atención e inconsistencias** en la sección de generación de PDF de desarrollo que podrían ocasionar comportamientos inesperados o errores al ejecutarlo repetidamente:
+
+---
+
+### 🚨 Diagnóstico de observaciones
+
+1. **Efecto secundario al modificar diccionarios en memoria (`_tema`)**
+   En la sección `elif opcion_menu == "📄 Generar Prueba Desarrollo":`, la siguiente línea modifica directamente los diccionarios contenidos en los bancos de preguntas globales:
+   ```python
+   for sp in seleccion:
+       sp['_tema'] = tema  # Modifica el objeto original en memoria
