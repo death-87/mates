@@ -534,7 +534,7 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 # Pie de página final
 st.divider()
 st.caption("💡 Los archivos se descargan directamente en PDF con diseño profesional. ¡Buena suerte! 🧠✨")
-```eoc
+
 
 ### Instrucciones rápidas para subirlo a GitHub:
 1. Reemplaza todo el contenido de tu archivo local `catamate.py` con el código generado arriba.
