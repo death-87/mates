@@ -534,26 +534,3 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 # Pie de página final
 st.divider()
 st.caption("💡 Los archivos se descargan directamente en PDF con diseño profesional. ¡Buena suerte! 🧠✨")
-
-
-### Instrucciones rápidas para subirlo a GitHub:
-1. Reemplaza todo el contenido de tu archivo local `catamate.py` con el código generado arriba.
-2. Abre la terminal en el directorio del proyecto y ejecuta:
-   
-```bash
-   git add catamate.py
-   git commit -m "Add 2° Medio Trigonometry question bank and dashboard section"
-   git push origin main
-   ```El código Python estructurado con **Streamlit** y **ReportLab** para la generación de evaluaciones en PDF está bien construido. 
-
-Analizando el código, se identifican un par de **puntos de atención e inconsistencias** en la sección de generación de PDF de desarrollo que podrían ocasionar comportamientos inesperados o errores al ejecutarlo repetidamente:
-
----
-
-### 🚨 Diagnóstico de observaciones
-
-1. **Efecto secundario al modificar diccionarios en memoria (`_tema`)**
-   En la sección `elif opcion_menu == "📄 Generar Prueba Desarrollo":`, la siguiente línea modifica directamente los diccionarios contenidos en los bancos de preguntas globales:
-   ```python
-   for sp in seleccion:
-       sp['_tema'] = tema  # Modifica el objeto original en memoria
