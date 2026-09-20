@@ -630,7 +630,7 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 
 st.divider()
 st.caption("💡 Banco de ejercicios 2° Medio — Basado en el programa oficial PPT")
-```eof
+
 
 ---
 
