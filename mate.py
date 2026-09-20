@@ -14,7 +14,7 @@ from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
 
 # Configuración de página
-st.set_page_config(page_title="📐 Matemáticas — Triángulos y Trigonometría", layout="wide")
+st.set_page_config(page_title="📐 2° Medio — Razones Trigonométricas", layout="wide")
 
 
 # ==============================================================================
@@ -24,35 +24,24 @@ st.set_page_config(page_title="📐 Matemáticas — Triángulos y Trigonometrí
 def dibujar_nino(ax, x, y, escala=1.0):
     """ Dibuja un niño/persona amigable en la posición (x, y) """
     r_cabeza = 0.15 * escala
-    
-    # Cabeza
     cabeza = patches.Circle((x, y + 0.7 * escala), r_cabeza, facecolor='#FFD1DC', edgecolor='#2B2B2B', lw=1.5, zorder=5)
     ax.add_patch(cabeza)
-    # Ojos
     ax.plot([x - 0.05 * escala, x + 0.05 * escala], [y + 0.72 * escala, y + 0.72 * escala], 'o', color='#2B2B2B', ms=3*escala, zorder=6)
-    # Sonrisa
     arc = patches.Arc((x, y + 0.68 * escala), 0.12 * escala, 0.08 * escala, angle=0, theta1=200, theta2=340, color='#D9534F', lw=1.5, zorder=6)
     ax.add_patch(arc)
-    # Cuerpo / Polera
     cuerpo = patches.Polygon([[x - 0.12 * escala, y + 0.25 * escala], [x + 0.12 * escala, y + 0.25 * escala], [x + 0.08 * escala, y + 0.55 * escala], [x - 0.08 * escala, y + 0.55 * escala]], facecolor='#4A90E2', edgecolor='#2B2B2B', lw=1.5, zorder=4)
     ax.add_patch(cuerpo)
-    # Piernas
     ax.plot([x - 0.06 * escala, x - 0.06 * escala], [y, y + 0.25 * escala], color='#2B2B2B', lw=2.5, zorder=3)
     ax.plot([x + 0.06 * escala, x + 0.06 * escala], [y, y + 0.25 * escala], color='#2B2B2B', lw=2.5, zorder=3)
-    # Zapatos
     ax.plot([x - 0.09 * escala, x - 0.03 * escala], [y, y], color='#8B5A2B', lw=3, zorder=4)
     ax.plot([x + 0.03 * escala, x + 0.09 * escala], [y, y], color='#8B5A2B', lw=3, zorder=4)
 
 def dibujar_arbol(ax, x, y, altura=4.0, ancho=2.0):
-    """ Dibuja un árbol amigable (tronco + copa frondosa) """
+    """ Dibuja una araucaria / árbol estilizado """
     w_tronco = ancho * 0.2
     h_tronco = altura * 0.4
-    
-    # Tronco
     tronco = patches.Rectangle((x - w_tronco/2, y), w_tronco, h_tronco, facecolor='#8B5A2B', edgecolor='#4A2E12', lw=1.5, zorder=3)
     ax.add_patch(tronco)
-    
-    # Copa (círculos verdes superpuestos)
     r_copa = ancho * 0.4
     y_copa = y + h_tronco
     c1 = patches.Circle((x, y_copa + r_copa*0.8), r_copa*1.1, facecolor='#2ECC71', edgecolor='#27AE60', lw=1.5, zorder=4)
@@ -75,7 +64,7 @@ def dibujar_avion(ax, x, y, escala=1.0):
         ax.add_patch(win)
 
 def dibujar_torre(ax, x, y, altura=5.0, ancho=1.5):
-    """ Dibuja un faro/torre estilizada """
+    """ Dibuja una torre/faro """
     torre = patches.Polygon([[x - ancho/2, y], [x + ancho/2, y], [x + ancho*0.3, y + altura], [x - ancho*0.3, y + altura]], facecolor='#E74C3C', edgecolor='#922B21', lw=1.5, zorder=3)
     ax.add_patch(torre)
     for h_frac in [0.25, 0.5, 0.75]:
@@ -85,7 +74,7 @@ def dibujar_torre(ax, x, y, altura=5.0, ancho=1.5):
     ax.add_patch(copula)
 
 def dibujar_resbalin(ax, x, y, largo=4.0, altura=2.5):
-    """ Dibuja un resbalín """
+    """ Dibuja un resbalín de parque """
     ax.plot([x, x], [y, y + altura], color='#7F8C8D', lw=4, zorder=3)
     ax.plot([x, x + largo], [y + altura, y], color='#E67E22', lw=5, zorder=4)
     ax.plot([x + largo, x + largo], [y, y + 0.3], color='#7F8C8D', lw=3, zorder=3)
@@ -96,17 +85,14 @@ def dibujar_resbalin(ax, x, y, largo=4.0, altura=2.5):
 # ==============================================================================
 
 def generar_esquema_amigable(tipo, datos):
-    """
-    Genera el esquema gráfico contextualizado y lo retorna como BytesIO (PNG).
-    """
     fig, ax = plt.subplots(figsize=(5.5, 3.8), dpi=150)
     ax.set_aspect('equal')
     ax.axis('off')
 
     if tipo == "arbol_elevacion":
-        distancia = datos.get("distancia", 12)
-        h_arbol = datos.get("h_arbol", 12)
-        ang = datos.get("ang", 45)
+        distancia = datos.get("distancia", 21)
+        h_arbol = datos.get("h_arbol", 38)
+        ang = datos.get("ang", 60)
         
         ax.plot([-2, distancia + 4], [0, 0], color='#27AE60', lw=3, zorder=2)
         ax.fill_between([-2, distancia + 4], -0.5, 0, color='#D5F5E3', zorder=1)
@@ -125,7 +111,7 @@ def generar_esquema_amigable(tipo, datos):
         
         ax.text(r_arc + 0.5, h_ojo + 0.3, f"{ang}°", color='#E74C3C', fontweight='bold', fontsize=11)
         ax.text(distancia/2, -0.8, f"Distancia = {distancia} m", ha='center', fontweight='bold', color='#2C3E50', fontsize=10)
-        ax.text(distancia + 0.8, h_arbol/2, f"Altura = {h_arbol} m", va='center', rotation=270, fontweight='bold', color='#2980B9', fontsize=10)
+        ax.text(distancia + 0.8, h_arbol/2, f"H = {h_arbol} m", va='center', rotation=270, fontweight='bold', color='#2980B9', fontsize=10)
 
     elif tipo == "avion_depresion":
         distancia = datos.get("distancia", 15)
@@ -148,28 +134,23 @@ def generar_esquema_amigable(tipo, datos):
         ax.text(distancia + 0.6, altura/2, f"Altura = {altura} m", va='center', rotation=270, fontweight='bold', color='#27AE60', fontsize=10)
         ax.text(distancia/2, altura/2 + 0.5, "x (distancia visual)", rotation=np.degrees(np.arctan(altura/distancia)), ha='center', color='#2980B9', fontweight='bold', fontsize=10)
 
-    elif tipo == "faro_depresion":
-        altura = datos.get("altura", 10)
-        distancia = datos.get("distancia", 12)
-        ang = datos.get("ang", 45)
+    elif tipo == "torre_depresion":
+        altura = datos.get("altura", 34)
+        distancia = datos.get("distancia", 6)
+        ang = datos.get("ang", 80)
         
-        ax.plot([-2, distancia + 4], [0, 0], color='#2980B9', lw=4, zorder=2)
-        ax.fill_between([-2, distancia + 4], -0.8, 0, color='#AED6F1', zorder=1)
-        
+        ax.plot([-2, distancia + 4], [0, 0], color='#27AE60', lw=3, zorder=2)
         dibujar_torre(ax, 0, 0, altura=altura, ancho=2.0)
         
-        ax.plot([distancia - 0.8, distancia + 0.8, distancia + 0.5, distancia - 0.5], [0.3, 0.3, 0, 0], color='#8B5A2B', zorder=4)
-        ax.fill([distancia - 0.8, distancia + 0.8, distancia + 0.5, distancia - 0.5], [0.3, 0.3, 0, 0], color='#D35400', zorder=4)
+        ax.plot([0, distancia + 2], [altura, altura], color='#E74C3C', linestyle='--', lw=1.5, zorder=5)
+        ax.plot([0, distancia], [altura, 0], color='#2980B9', lw=2.5, zorder=6)
         
-        ax.plot([0, distancia + 3], [altura + 0.3, altura + 0.3], color='#E74C3C', linestyle='--', lw=1.5, zorder=5)
-        ax.plot([0, distancia], [altura + 0.3, 0.3], color='#2980B9', lw=2.5, zorder=6)
-        
-        arc = patches.Arc((0, altura + 0.3), 3.0, 3.0, angle=0, theta1=360-ang, theta2=360, color='#E74C3C', lw=2, zorder=7)
+        arc = patches.Arc((0, altura), 3.0, 3.0, angle=0, theta1=360-ang, theta2=360, color='#E74C3C', lw=2, zorder=7)
         ax.add_patch(arc)
         
-        ax.text(1.8, altura - 0.4, f"{ang}°", color='#E74C3C', fontweight='bold', fontsize=11)
-        ax.text(-1.2, altura/2, f"Faro: {altura} m", rotation=90, va='center', fontweight='bold', color='#C0392B', fontsize=10)
-        ax.text(distancia/2, -0.6, f"Distancia = {distancia} m", ha='center', fontweight='bold', color='#2980B9', fontsize=10)
+        ax.text(1.5, altura - 0.8, f"{ang}°", color='#E74C3C', fontweight='bold', fontsize=11)
+        ax.text(-1.2, altura/2, f"Torre: {altura} m", rotation=90, va='center', fontweight='bold', color='#C0392B', fontsize=10)
+        ax.text(distancia/2, -0.8, f"Distancia K = {distancia} m", ha='center', fontweight='bold', color='#2980B9', fontsize=10)
 
     elif tipo == "resbalin":
         largo = datos.get("largo", 4)
@@ -184,7 +165,7 @@ def generar_esquema_amigable(tipo, datos):
         arc = patches.Arc((largo*np.cos(np.radians(ang)), 0), 1.5, 1.5, angle=0, theta1=180-ang, theta2=180, color='#E74C3C', lw=2)
         ax.add_patch(arc)
         
-        ax.text(largo*0.3, h_resbalin*0.7, f"Resbalín = {largo} m", rotation=-ang, ha='center', fontweight='bold', color='#E67E22', fontsize=10)
+        ax.text(largo*0.3, h_resbalin*0.7, f"Largo = {largo} m", rotation=-ang, ha='center', fontweight='bold', color='#E67E22', fontsize=10)
         ax.text(-0.8, h_resbalin/2, "Altura (h)", rotation=90, va='center', fontweight='bold', color='#2980B9', fontsize=10)
 
     else:
@@ -215,80 +196,151 @@ def generar_esquema_amigable(tipo, datos):
 
 
 # ==============================================================================
-# ============== BANCOS DE PREGUNTAS ===========================================
+# ============== BANCOS DE PREGUNTAS (ORDEN DE LAS 7 SECCIONES) ===============
 # ==============================================================================
 
-banco_area_perimetro = [
+# SECCIÓN 1: Definición de Razones Trigonométricas
+banco_sec1_definiciones = [
     {
-        "pregunta": "Un triángulo tiene base 12 cm y altura 8 cm. Calcula su área.", 
-        "respuesta": "48 cm²", 
-        "explicacion": "Área = (12 × 8) ÷ 2 = 48 cm²",
-        "esquema": {"tipo": "triangulo", "datos": {"base": 12, "altura": 8, "lbl_base": "b = 12 cm", "lbl_altura": "h = 8 cm", "lbl_hip": ""}}
-    },
-    {"pregunta": "Un triángulo equilátero tiene lado de 10 cm. Calcula su perímetro.", "respuesta": "30 cm", "explicacion": "Perímetro = 3 × 10 = 30 cm"},
-    {"pregunta": "Un triángulo rectángulo tiene catetos de 6 cm y 8 cm, y su hipotenusa mide 10 cm. Calcula su perímetro.", "respuesta": "24 cm", "explicacion": "6 + 8 + 10 = 24 cm"},
-    {"pregunta": "Un triángulo tiene base 15 m y altura 6 m. Calcula su área.", "respuesta": "45 m²", "explicacion": "(15 × 6) ÷ 2 = 45 m²"}
-]
-
-banco_angulos = [
-    {"pregunta": "Dos ángulos de un triángulo miden 40° y 65°. ¿Cuánto mide el tercer ángulo?", "respuesta": "75°", "explicacion": "180° − 105° = 75°"},
-    {"pregunta": "En un triángulo rectángulo, un ángulo agudo mide 32°. ¿Cuánto mide el otro ángulo agudo?", "respuesta": "58°", "explicacion": "90° − 32° = 58°"}
-]
-
-banco_pitagoras = [
-    {
-        "pregunta": "Los catetos de un triángulo rectángulo miden 3 cm y 4 cm. ¿Cuánto mide la hipotenusa (c)?", 
-        "respuesta": "5 cm", 
-        "explicacion": "3² + 4² = 9 + 16 = 25 → √25 = 5 cm",
-        "esquema": {"tipo": "triangulo", "datos": {"base": 4, "altura": 3, "lbl_base": "4 cm", "lbl_altura": "3 cm", "lbl_hip": "c = ?"}}
+        "categoria": "1. Definición de Razones Trigonométricas",
+        "pregunta": "En un triángulo rectángulo con catetos a = 8 cm, b = 15 cm e hipotenusa c = 17 cm, halla sen(β), cos(β) y tan(β) para el ángulo β (opuesto al cateto b = 15 cm).",
+        "respuesta": "sen(β) = 15/17, cos(β) = 8/17, tan(β) = 15/8",
+        "explicacion": "sen(β) = Cateto Opuesto / Hipotenusa = 15/17. cos(β) = Cateto Adyacente / Hipotenusa = 8/17. tan(β) = Cateto Opuesto / Cateto Adyacente = 15/8.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 8, "altura": 15, "lbl_base": "a = 8 cm", "lbl_altura": "b = 15 cm", "lbl_hip": "c = 17 cm"}}
     },
     {
-        "pregunta": "Un cateto mide 12 cm y la hipotenusa 13 cm. ¿Cuánto mide el otro cateto (a)?", 
-        "respuesta": "5 cm", 
-        "explicacion": "13² − 12² = 169 − 144 = 25 → √25 = 5 cm",
-        "esquema": {"tipo": "triangulo", "datos": {"base": 12, "altura": 5, "lbl_base": "12 cm", "lbl_altura": "a = ?", "lbl_hip": "13 cm"}}
+        "categoria": "1. Definición de Razones Trigonométricas",
+        "pregunta": "¿Cuáles son las 6 razones trigonométricas principales y cómo se definen para un ángulo agudo en un triángulo rectángulo?",
+        "respuesta": "sen=CO/HIP, cos=CA/HIP, tan=CO/CA, ctg=CA/CO, sec=HIP/CA, csc=HIP/CO",
+        "explicacion": "Estas 6 razones dependen exclusivamente de la medida de los ángulos y no de la escala del triángulo."
     }
 ]
 
-banco_cosenos = [
-    {"pregunta": "Lados 5 cm y 7 cm con ángulo de 60° entre ellos. Tercer lado = ?", "respuesta": "√39 cm", "explicacion": "c² = 25 + 49 − 35 = 39 → √39 cm"}
-]
-
-banco_trigonometria = [
+# SECCIÓN 2: Teorema de Pitágoras
+banco_sec2_pitagoras = [
     {
-        "categoria": "📐 Ángulo de elevación — El Árbol", 
-        "pregunta": "Desde el suelo, a 12 m de la base de un árbol, un niño observa su cima con un ángulo de elevación de 45°. ¿Cuál es la altura del árbol?", 
-        "respuesta": "12 m", 
-        "explicacion": "tan(45°) = h/12 → h = 12 m",
-        "esquema": {"tipo": "arbol_elevacion", "datos": {"distancia": 12, "h_arbol": 12, "ang": 45}}
+        "categoria": "2. Teorema de Pitágoras",
+        "pregunta": "En un triángulo rectángulo ABC, los catetos miden a = 4 cm y b = 3 cm. Calcula la hipotenusa c y las razones sen(α) y cos(α) para el ángulo α en el vértice A.",
+        "respuesta": "c = 5 cm, sen(α) = 4/5, cos(α) = 3/5",
+        "explicacion": "c = √(3² + 4²) = √25 = 5 cm. Para α: cateto opuesto = 4, cateto adyacente = 3.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 3, "altura": 4, "lbl_base": "b = 3 cm", "lbl_altura": "a = 4 cm", "lbl_hip": "c = 5 cm"}}
     },
     {
-        "categoria": "📉 Ángulo de depresión — El Faro", 
-        "pregunta": "Desde un faro de 30 m de altura, se observa un barco con un ángulo de depresión de 45°. ¿A qué distancia horizontal está el barco?", 
-        "respuesta": "30 m", 
-        "explicacion": "tan(45°) = 30/d → d = 30 m",
-        "esquema": {"tipo": "faro_depresion", "datos": {"distancia": 30, "altura": 30, "ang": 45}}
+        "categoria": "2. Teorema de Pitágoras",
+        "pregunta": "Un triángulo rectángulo tiene cateto adyacente = 40 y cateto opuesto = 9. Determina su hipotenusa c y sen(β).",
+        "respuesta": "c = 41, sen(β) = 9/41",
+        "explicacion": "c = √(40² + 9²) = √(1600 + 81) = √1681 = 41. sen(β) = 9/41.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 40, "altura": 9, "lbl_base": "40", "lbl_altura": "9", "lbl_hip": "c = 41"}}
     }
 ]
 
-banco_guia_2medio = [
+# SECCIÓN 3: Identidades y Relaciones Trigonométricas
+banco_sec3_identidades = [
     {
-        "categoria": "📐 Árbol y Araucaria (Elevación)",
-        "pregunta": "Antonia observa el punto más alto de una araucaria con un ángulo de elevación de 60° respecto del nivel de sus ojos. Ella mide 1,60 m de estatura y la distancia a la base es de 21 m. ¿Cuál es la altura total de la araucaria?",
+        "categoria": "3. Identidades y Relaciones Trigonométricas",
+        "pregunta": "Demuestra cómo calcular tan(α), cot(α), sec(α) y csc(α) si solo conoces los valores de sen(α) y cos(α).",
+        "respuesta": "tan(α)=sen(α)/cos(α), cot(α)=cos(α)/sen(α), sec(α)=1/cos(α), csc(α)=1/sen(α)",
+        "explicacion": "Cualquier razón trigonométrica se puede derivar directamente si se conocen únicamente seno y coseno del mismo ángulo."
+    },
+    {
+        "categoria": "3. Identidades y Relaciones Trigonométricas",
+        "pregunta": "Si sen(α) = 3/5 y cos(α) = 4/5, calcula el valor exacto de tan(α) y sec(α).",
+        "respuesta": "tan(α) = 3/4, sec(α) = 5/4",
+        "explicacion": "tan(α) = (3/5)/(4/5) = 3/4. sec(α) = 1/(4/5) = 5/4."
+    }
+]
+
+# SECCIÓN 4: Ángulos Conocidos y Operaciones
+banco_sec4_operaciones = [
+    {
+        "categoria": "4. Ángulos Conocidos y Operaciones",
+        "pregunta": "Calcula el valor exacto de la expresión: sen(30°) + sen(60°).",
+        "respuesta": "(1 + √3)/2",
+        "explicacion": "sen(30°) = 1/2, sen(60°) = √3/2. Suma = 1/2 + √3/2 = (1 + √3)/2."
+    },
+    {
+        "categoria": "4. Ángulos Conocidos y Operaciones",
+        "pregunta": "Reduce la siguiente expresión trigonométrica: B = tan²(30°) − sec²(30°).",
+        "respuesta": "-1",
+        "explicacion": "tan(30°) = 1/√3 → tan² = 1/3. sec(30°) = 2/√3 → sec² = 4/3. B = 1/3 − 4/3 = −1."
+    },
+    {
+        "categoria": "4. Ángulos Conocidos y Operaciones",
+        "pregunta": "Calcula el valor numérico de: [tan(60°) + 3·cos(30°)] ÷ [sen(45°)]²",
+        "respuesta": "5√3",
+        "explicacion": "tan(60°)=√3, cos(30°)=√3/2 → Num = 5√3/2. sen(45°)=√2/2 → Den = 1/2. Res = (5√3/2)/(1/2) = 5√3."
+    }
+]
+
+# SECCIÓN 5: Ángulos Notables o Especiales
+banco_sec5_notables = [
+    {
+        "categoria": "5. Ángulos Notables (37°-53°)",
+        "pregunta": "En un triángulo notable de 37°-53° (lados 3k:4k:5k), la hipotenusa mide 15 cm. Calcula la longitud de sus catetos.",
+        "respuesta": "Cateto menor = 9 cm, Cateto mayor = 12 cm",
+        "explicacion": "Hipotenusa = 5k = 15 → k = 3. Cateto opuesto a 37° = 3k = 9 cm. Cateto opuesto a 53° = 4k = 12 cm.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 12, "altura": 9, "lbl_base": "12 cm", "lbl_altura": "9 cm", "lbl_hip": "15 cm"}}
+    },
+    {
+        "categoria": "5. Ángulos Notables (30°-60°)",
+        "pregunta": "En un triángulo rectángulo de 30°-60°, la hipotenusa mide 16 mm. ¿Cuánto miden sus catetos?",
+        "respuesta": "Cateto menor (30°) = 8 mm, Cateto mayor (60°) = 8√3 mm",
+        "explicacion": "Hipotenusa = 2k = 16 mm → k = 8 mm. Cateto menor = 8 mm, cateto mayor = 8√3 mm.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 13.8, "altura": 8, "lbl_base": "8√3 mm", "lbl_altura": "8 mm", "lbl_hip": "16 mm"}}
+    },
+    {
+        "categoria": "5. Ángulos Notables (45°-45°)",
+        "pregunta": "En un triángulo rectángulo isósceles con ángulos de 45°, la hipotenusa mide 7√2 cm. Encuentra la longitud de sus catetos x.",
+        "respuesta": "x = 7 cm",
+        "explicacion": "Hipotenusa = k√2 = 7√2 cm → k = 7 cm. Ambos catetos miden 7 cm.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 7, "altura": 7, "lbl_base": "7 cm", "lbl_altura": "7 cm", "lbl_hip": "7√2 cm"}}
+    }
+]
+
+# SECCIÓN 6: Cálculo de Lados y Ángulos con Calculadora
+banco_sec6_calculadora = [
+    {
+        "categoria": "6. Cálculo de Lados (Uso de Calculadora)",
+        "pregunta": "En un triángulo rectángulo, la hipotenusa mide 11 cm y un ángulo agudo mide 42°. Calcula la longitud del cateto adyacente x.",
+        "respuesta": "x ≈ 8.2 cm",
+        "explicacion": "cos(42°) = x / 11 → x = 11 · cos(42°) ≈ 11 · 0.7431 ≈ 8.17 cm ≈ 8.2 cm.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 8.2, "altura": 7.4, "lbl_base": "x ≈ 8.2 cm", "lbl_altura": "y ≈ 7.4 cm", "lbl_hip": "11 cm"}}
+    },
+    {
+        "categoria": "6. Cálculo de Ángulos (Inversas)",
+        "pregunta": "En un triángulo rectángulo, el cateto opuesto a un ángulo z mide 32 pulgadas y la hipotenusa mide 74 pulgadas. Encuentra la medida del ángulo z.",
+        "respuesta": "z ≈ 25.6° (o 26°)",
+        "explicacion": "sen(z) = 32 / 74 → z = sen⁻¹(32/74) ≈ sen⁻¹(0.4324) ≈ 25.6° ≈ 26°.",
+        "esquema": {"tipo": "triangulo", "datos": {"base": 66.7, "altura": 32, "lbl_base": "CA", "lbl_altura": "32 pulg", "lbl_hip": "74 pulg"}}
+    }
+]
+
+# SECCIÓN 7: Ángulos de Elevación y Depresión (Aplicaciones)
+banco_sec7_aplicaciones = [
+    {
+        "categoria": "7. Ángulos de Depresión — La Torre",
+        "pregunta": "La medida del ángulo de depresión desde lo alto de una torre de 34 m de altura hasta un punto K en el suelo es de 80°. Calcula la distancia del punto K a la base de la torre.",
+        "respuesta": "≈ 6 metros",
+        "explicacion": "El ángulo interior superior mide 90° − 80° = 10°. tan(10°) = x / 34 → x = 34 · tan(10°) ≈ 6 m.",
+        "esquema": {"tipo": "torre_depresion", "datos": {"distancia": 6, "altura": 34, "ang": 80}}
+    },
+    {
+        "categoria": "7. Ángulos de Elevación — La Araucaria",
+        "pregunta": "Antonia observa la copa de una araucaria con un ángulo de elevación de 60° respecto del nivel de sus ojos. Ella mide 1,60 m de estatura y está a 21 m de la base. ¿Cuál es la altura total H de la araucaria?",
         "respuesta": "≈ 38 metros",
-        "explicacion": "Altura desde ojos = 21 · tan(60°) = 21√3 ≈ 36,37 m. Altura total = 36,37 + 1,60 ≈ 38 m.",
+        "explicacion": "Altura sobre nivel de ojos = 21 · tan(60°) = 21√3 ≈ 36,37 m. Altura total = 36,37 + 1,60 ≈ 38 m.",
         "esquema": {"tipo": "arbol_elevacion", "datos": {"distancia": 21, "h_arbol": 38, "ang": 60}}
     },
     {
-        "categoria": "✈️ Avión en Descenso (Depresión)",
-        "pregunta": "Un avión vuela a 1 700 m de altura y comienza su descenso a la pista con un ángulo de depresión de 25°. ¿A qué distancia visual (x) se encuentra de la pista?",
+        "categoria": "7. Ángulos de Depresión — El Avión",
+        "pregunta": "Un avión vuela a 1 700 m de altura cuando comienza su descenso a la pista con un ángulo de depresión de 25°. ¿A qué distancia visual (x) se encuentra de la pista?",
         "respuesta": "≈ 4 022,7 metros",
-        "explicacion": "sen(25°) = 1700 / x → x = 1700 / sen(25°) ≈ 4022,7 m.",
+        "explicacion": "sen(25°) = 1700 / x → x = 1700 / sen(25°) ≈ 1700 / 0,4226 ≈ 4022,7 m.",
         "esquema": {"tipo": "avion_depresion", "datos": {"distancia": 4022, "altura": 1700, "ang": 25}}
     },
     {
-        "categoria": "🛝 El Resbalín del Parque",
-        "pregunta": "Ángela sube a un resbalín que tiene una inclinación de 30° respecto al suelo y 4 metros de longitud. ¿Cuál es la altura máxima que alcanza?",
+        "categoria": "7. Ángulos de Elevación — El Resbalín",
+        "pregunta": "Ángela sube a un resbalín que tiene una inclinación de 30° respecto al suelo y 4 metros de longitud. ¿Cuál es la altura máxima h que alcanza?",
         "respuesta": "2 metros",
         "explicacion": "sen(30°) = h / 4 → 1/2 = h / 4 → h = 2 m.",
         "esquema": {"tipo": "resbalin", "datos": {"largo": 4, "ang": 30}}
@@ -386,7 +438,7 @@ def mostrar_banco(titulo, banco, clave_sesion):
     
     if "esquema" in preg:
         buf_img = generar_esquema_amigable(preg["esquema"]["tipo"], preg["esquema"]["datos"])
-        st.image(buf_img, caption="Esquema amigable del ejercicio", width=420)
+        st.image(buf_img, caption="Esquema ilustrado del ejercicio", width=420)
 
     col1, col2 = st.columns(2)
     with col1:
@@ -408,47 +460,100 @@ with st.sidebar:
         st.image(ruta_imagen, use_container_width=True, caption="Panel de Control")
     
     st.divider()
+    st.subheader("Secciones del PPT (En orden):")
     opcion_menu = st.radio(
         "Navegación",
-        ["🏠 Inicio", "📏 Área y Perímetro", "📐 Teorema de Pitágoras", "🔺 Razones Trigonométricas", "📘 Guía 2° Medio", "📄 Generar Prueba Desarrollo"],
+        [
+            "🏠 Inicio",
+            "1. Definición de Razones Trigonométricas",
+            "2. Teorema de Pitágoras",
+            "3. Identidades y Relaciones Trigonométricas",
+            "4. Ángulos Conocidos y Operaciones",
+            "5. Ángulos Notables (30°-60°, 45°-45°, 37°-53°)",
+            "6. Cálculo de Lados y Ángulos (Calculadora)",
+            "7. Ángulos de Elevación y Depresión (Aplicaciones)",
+            "📄 Generar Prueba Desarrollo"
+        ],
         label_visibility="collapsed"
     )
 
-st.title("📐 Banco de Ejercicios — Triángulos y Trigonometría")
+st.title("📐 2° Medio — Razones Trigonométricas")
 
 if opcion_menu == "🏠 Inicio":
     st.subheader("¡Bienvenido!")
     st.markdown("""
-    Esta aplicación incluye **esquemas amigables e ilustrados** (niños, árboles, aviones, faros, resbalines) dibujados automáticamente para facilitar la comprensión de la trigonometría.
+    Esta plataforma organiza el contenido en el **mismo orden de las 7 secciones de la presentación PPT**:
     
-    * **Práctica Interactiva:** Navega por los temas para ver los esquemas dinámicos.
-    * **Generación de Evaluaciones:** Genera PDFs con ilustraciones y solucionarios listos para imprimir.
+    1. **Definición de Razones Trigonométricas:** Seno, Coseno, Tangente, Cotangente, Secante, Cosecante.
+    2. **Teorema de Pitágoras:** Cálculo de catetos e hipotenusa.
+    3. **Identidades y Relaciones Trigonométricas:** Relación entre razones.
+    4. **Ángulos Conocidos y Operaciones:** Tabla de valores y reducción de expresiones.
+    5. **Ángulos Notables:** Triángulos especiales (30°-60°, 45°-45°, 37°-53°).
+    6. **Cálculo con Calculadora:** Lados y ángulos con funciones inversas.
+    7. **Ángulos de Elevación y Depresión:** Problemas prácticos ilustrados (torre, araucaria, avión, resbalín).
     """)
 
-elif opcion_menu == "📏 Área y Perímetro":
-    mostrar_banco("📏 Área y Perímetro", banco_area_perimetro, "area")
+elif opcion_menu == "1. Definición de Razones Trigonométricas":
+    mostrar_banco("1. Definición de Razones Trigonométricas", banco_sec1_definiciones, "sec1")
 
-elif opcion_menu == "📐 Teorema de Pitágoras":
-    mostrar_banco("📐 Teorema de Pitágoras", banco_pitagoras, "pitagoras")
+elif opcion_menu == "2. Teorema de Pitágoras":
+    mostrar_banco("2. Teorema de Pitágoras", banco_sec2_pitagoras, "sec2")
 
-elif opcion_menu == "🔺 Razones Trigonométricas":
-    mostrar_banco("🔺 Razones Trigonométricas", banco_trigonometria, "trigo")
+elif opcion_menu == "3. Identidades y Relaciones Trigonométricas":
+    mostrar_banco("3. Identidades y Relaciones Trigonométricas", banco_sec3_identidades, "sec3")
 
-elif opcion_menu == "📘 Guía 2° Medio":
-    mostrar_banco("📘 Guía 2° Medio — Razones Trigonométricas", banco_guia_2medio, "g2m")
+elif opcion_menu == "4. Ángulos Conocidos y Operaciones":
+    st.header("4. Ángulos Conocidos y Operaciones")
+    with st.expander("📋 Tabla de Razones Trigonométricas Conocidas", expanded=True):
+        st.markdown("""
+| Angle α | sen(α) | cos(α) | tan(α) | cot(α) | sec(α) | csc(α) |
+|---|---|---|---|---|---|---|
+| **0°** | 0 | 1 | 0 | ∞ | 1 | ∞ |
+| **30°** | 1/2 | √3/2 | √3/3 | √3 | 2/√3 | 2 |
+| **45°** | √2/2 | √2/2 | 1 | 1 | √2 | √2 |
+| **60°** | √3/2 | 1/2 | √3 | √3/3 | 2 | 2/√3 |
+| **90°** | 1 | 0 | ∞ | 0 | ∞ | 1 |
+| **180°** | 0 | -1 | 0 | ∞ | -1 | ∞ |
+| **270°** | -1 | 0 | ∞ | 0 | ∞ | -1 |
+| **360°** | 0 | 1 | 0 | ∞ | 1 | ∞ |
+""")
+    st.divider()
+    mostrar_banco("", banco_sec4_operaciones, "sec4")
+
+elif opcion_menu == "5. Ángulos Notables (30°-60°, 45°-45°, 37°-53°)":
+    mostrar_banco("5. Ángulos Notables o Especiales", banco_sec5_notables, "sec5")
+
+elif opcion_menu == "6. Cálculo de Lados y Ángulos (Calculadora)":
+    mostrar_banco("6. Cálculo de Lados y Ángulos con Calculadora", banco_sec6_calculadora, "sec6")
+
+elif opcion_menu == "7. Ángulos de Elevación y Depresión (Aplicaciones)":
+    mostrar_banco("7. Ángulos de Elevación y Depresión (Aplicaciones Prácticas)", banco_sec7_aplicaciones, "sec7")
 
 elif opcion_menu == "📄 Generar Prueba Desarrollo":
-    st.header("📄 Generar Prueba de Desarrollo con Ilustraciones")
+    st.header("📄 Generar Prueba de Desarrollo")
     
-    temas_seleccion = st.multiselect("Selecciona temas a incluir:", ["Área y Perímetro", "Teorema de Pitágoras", "Razones Trigonométricas", "Guía 2° Medio"], default=["Teorema de Pitágoras", "Guía 2° Medio"])
-    nombre_prueba = st.text_input("Nombre de la prueba:", value="Evaluación de Matemáticas — Trigonometría y Triángulos")
+    mapeo_secciones = {
+        "1. Definición de Razones": banco_sec1_definiciones,
+        "2. Teorema de Pitágoras": banco_sec2_pitagoras,
+        "3. Identidades Trigonométricas": banco_sec3_identidades,
+        "4. Ángulos Conocidos": banco_sec4_operaciones,
+        "5. Ángulos Notables": banco_sec5_notables,
+        "6. Cálculo con Calculadora": banco_sec6_calculadora,
+        "7. Elevación y Depresión": banco_sec7_aplicaciones
+    }
     
-    mapeo = {"Área y Perímetro": banco_area_perimetro, "Teorema de Pitágoras": banco_pitagoras, "Razones Trigonométricas": banco_trigonometria, "Guía 2° Medio": banco_guia_2medio}
+    temas_seleccion = st.multiselect(
+        "Selecciona las secciones a incluir en la prueba:",
+        list(mapeo_secciones.keys()),
+        default=["2. Teorema de Pitágoras", "5. Ángulos Notables", "7. Elevación y Depresión"]
+    )
     
-    if st.button("📄 Generar Archivos PDF", type="primary"):
+    nombre_prueba = st.text_input("Nombre de la evaluación:", value="Evaluación de Matemáticas 2° Medio — Razones Trigonométricas")
+    
+    if st.button("📄 Generar Pruebas en PDF", type="primary"):
         prueba_preguntas = []
         for t in temas_seleccion:
-            for item in mapeo[t]:
+            for item in mapeo_secciones[t]:
                 cp = item.copy()
                 cp['_tema'] = t
                 prueba_preguntas.append(cp)
@@ -457,10 +562,15 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
         pdf_p = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, False)
         pdf_s = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, True)
         
-        st.success(f"✅ ¡Se generaron {len(prueba_preguntas)} ejercicios con sus esquemas e ilustraciones!")
+        st.success(f"✅ ¡Se generaron {len(prueba_preguntas)} ejercicios ordenados con sus ilustraciones!")
         c1, c2 = st.columns(2)
-        c1.download_button("📥 Descargar PRUEBA (.pdf)", pdf_p, file_name="Prueba_Ilustrada.pdf", mime="application/pdf")
-        c2.download_button("📥 Descargar SOLUCIONARIO (.pdf)", pdf_s, file_name="Solucionario_Ilustrado.pdf", mime="application/pdf")
+        c1.download_button("📥 Descargar PRUEBA (.pdf)", pdf_p, file_name="Prueba_Trigonometria.pdf", mime="application/pdf")
+        c2.download_button("📥 Descargar SOLUCIONARIO (.pdf)", pdf_s, file_name="Solucionario_Trigonometria.pdf", mime="application/pdf")
 
 st.divider()
-st.caption("💡 Banco de ejercicios v2.0 — Ilustraciones vectoriales amigables")
+st.caption("💡 Banco de ejercicios 2° Medio — Basado en el programa oficial PPT")
+```eof
+
+The code for `mate.py` has been updated with all 7 PPT sections in sequence, complete with vector diagrams and ReportLab PDF support. Let me know if you would like any further adjustments!Para poder organizar las cosas exactamente en el orden que necesitas, por favor **comparte o pega aquí el listado o código** indicando cuál es la secuencia deseada. 
+
+En cuanto me proporciones el orden y el fragmento de código (o el lenguaje con el que estás trabajando), te lo entrego listo y estructurado.
