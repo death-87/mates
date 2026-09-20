@@ -569,7 +569,6 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
 
 st.divider()
 st.caption("💡 Banco de ejercicios 2° Medio — Basado en el programa oficial PPT")
-```eof
 
 The code for `mate.py` has been updated with all 7 PPT sections in sequence, complete with vector diagrams and ReportLab PDF support. Let me know if you would like any further adjustments!Para poder organizar las cosas exactamente en el orden que necesitas, por favor **comparte o pega aquí el listado o código** indicando cuál es la secuencia deseada. 
 
