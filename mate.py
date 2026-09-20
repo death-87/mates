@@ -196,10 +196,9 @@ def generar_esquema_amigable(tipo, datos):
 
 
 # ==============================================================================
-# ============== BANCOS DE PREGUNTAS (ORDEN DE LAS 7 SECCIONES) ===============
+# ============== BANCOS DE PREGUNTAS ===========================================
 # ==============================================================================
 
-# SECCIÓN 1: Definición de Razones Trigonométricas
 banco_sec1_definiciones = [
     {
         "categoria": "1. Definición de Razones Trigonométricas",
@@ -212,11 +211,10 @@ banco_sec1_definiciones = [
         "categoria": "1. Definición de Razones Trigonométricas",
         "pregunta": "¿Cuáles son las 6 razones trigonométricas principales y cómo se definen para un ángulo agudo en un triángulo rectángulo?",
         "respuesta": "sen=CO/HIP, cos=CA/HIP, tan=CO/CA, ctg=CA/CO, sec=HIP/CA, csc=HIP/CO",
-        "explicacion": "Estas 6 razones dependen exclusivamente de la medida de los ángulos y no de la escala del triángulo."
+        "explicacion": "Estas 6 razones dependen exclusivamente de la medida de los ángulos y no del tamaño del triángulo."
     }
 ]
 
-# SECCIÓN 2: Teorema de Pitágoras
 banco_sec2_pitagoras = [
     {
         "categoria": "2. Teorema de Pitágoras",
@@ -234,7 +232,6 @@ banco_sec2_pitagoras = [
     }
 ]
 
-# SECCIÓN 3: Identidades y Relaciones Trigonométricas
 banco_sec3_identidades = [
     {
         "categoria": "3. Identidades y Relaciones Trigonométricas",
@@ -250,7 +247,6 @@ banco_sec3_identidades = [
     }
 ]
 
-# SECCIÓN 4: Ángulos Conocidos y Operaciones
 banco_sec4_operaciones = [
     {
         "categoria": "4. Ángulos Conocidos y Operaciones",
@@ -272,7 +268,6 @@ banco_sec4_operaciones = [
     }
 ]
 
-# SECCIÓN 5: Ángulos Notables o Especiales
 banco_sec5_notables = [
     {
         "categoria": "5. Ángulos Notables (37°-53°)",
@@ -297,7 +292,6 @@ banco_sec5_notables = [
     }
 ]
 
-# SECCIÓN 6: Cálculo de Lados y Ángulos con Calculadora
 banco_sec6_calculadora = [
     {
         "categoria": "6. Cálculo de Lados (Uso de Calculadora)",
@@ -315,7 +309,6 @@ banco_sec6_calculadora = [
     }
 ]
 
-# SECCIÓN 7: Ángulos de Elevación y Depresión (Aplicaciones)
 banco_sec7_aplicaciones = [
     {
         "categoria": "7. Ángulos de Depresión — La Torre",
@@ -347,14 +340,9 @@ banco_sec7_aplicaciones = [
     }
 ]
 
-banco_alternativas = [
-    {"pregunta": "¿Cuál es el área de un triángulo con base 10 cm y altura 6 cm?", "opciones": ["A) 16 cm²", "B) 30 cm²", "C) 60 cm²", "D) 120 cm²"], "respuesta_correcta": "B", "explicacion": "Área = (10 × 6) ÷ 2 = 30 cm²"},
-    {"pregunta": "¿Cuánto mide el tercer ángulo de un triángulo si los otros dos miden 50° y 60°?", "opciones": ["A) 70°", "B) 80°", "C) 90°", "D) 110°"], "respuesta_correcta": "A", "explicacion": "180° − 50° − 60° = 70°"}
-]
-
 
 # ==============================================================================
-# ============== REPORTLAB PDF GENERATOR ========================================
+# ============== REPORTLAB PDF GENERATOR (SOLO PREGUNTAS) =======================
 # ==============================================================================
 
 def crear_estilos():
@@ -415,7 +403,7 @@ def generar_pdf_desarrollo(preguntas, titulo, fecha, con_respuestas=False):
 
 
 # ==============================================================================
-# ============== INTERFAZ STREAMLIT ============================================
+# ============== FUNCIONES AUXILIARES DE INTERFAZ STREAMLIT ====================
 # ==============================================================================
 
 def inicializar_sesion(clave, valor_inicial):
@@ -431,10 +419,7 @@ def mostrar_banco(titulo, banco, clave_sesion):
     idx = st.session_state[f"{clave_sesion}_indice"]
     preg = banco[idx]
     
-    if "categoria" in preg:
-        st.subheader(f"{preg['categoria']}")
-    
-    st.info(f"📝 {preg['pregunta']}")
+    st.info(f"📝 **Ejercicio Interactivo:** {preg['pregunta']}")
     
     if "esquema" in preg:
         buf_img = generar_esquema_amigable(preg["esquema"]["tipo"], preg["esquema"]["datos"])
@@ -452,6 +437,11 @@ def mostrar_banco(titulo, banco, clave_sesion):
             st.session_state[f"{clave_sesion}_indice"] = random.randint(0, len(banco)-1)
             st.session_state[f"{clave_sesion}_ver"] = False
             st.rerun()
+
+
+# ==============================================================================
+# ============== INTERFAZ PRINCIPAL Y NAVEGACIÓN DEDICADA =======================
+# ==============================================================================
 
 with st.sidebar:
     st.title("Dashboard 📊")
@@ -479,34 +469,74 @@ with st.sidebar:
 
 st.title("📐 2° Medio — Razones Trigonométricas")
 
+# --- SECCIÓN 0: INICIO ---
 if opcion_menu == "🏠 Inicio":
-    st.subheader("¡Bienvenido!")
+    st.subheader("¡Bienvenido al Módulo Interactivo de Trigonometría!")
     st.markdown("""
-    Esta plataforma organiza el contenido en el **mismo orden de las 7 secciones de la presentación PPT**:
+    Esta plataforma organiza el contenido del curso en **7 clases explicativas e interactivas**:
     
-    1. **Definición de Razones Trigonométricas:** Seno, Coseno, Tangente, Cotangente, Secante, Cosecante.
-    2. **Teorema de Pitágoras:** Cálculo de catetos e hipotenusa.
-    3. **Identidades y Relaciones Trigonométricas:** Relación entre razones.
-    4. **Ángulos Conocidos y Operaciones:** Tabla de valores y reducción de expresiones.
-    5. **Ángulos Notables:** Triángulos especiales (30°-60°, 45°-45°, 37°-53°).
-    6. **Cálculo con Calculadora:** Lados y ángulos con funciones inversas.
-    7. **Ángulos de Elevación y Depresión:** Problemas prácticos ilustrados (torre, araucaria, avión, resbalín).
+    1. **Definición de Razones Trigonométricas:** Mnemotecnia SOH-CAH-TOA y definiciones básicas.
+    2. **Teorema de Pitágoras:** Relación entre catetos e hipotenusa.
+    3. **Identidades y Relaciones:** Derivación de tangente, secante y cosecante.
+    4. **Ángulos Conocidos y Operaciones:** Tabla oficial de valores numéricos.
+    5. **Ángulos Notables:** Proporciones geométricas en triángulos especiales (30°-60°, 45°-45°, 37°-53°).
+    6. **Cálculo con Calculadora:** Encontrar lados desconocidos y ángulos con funciones inversas ($\sin^{-1}, \cos^{-1}, \tan^{-1}$).
+    7. **Ángulos de Elevación y Depresión:** Aplicaciones prácticas ilustradas.
     """)
 
+# --- SECCIÓN 1 ---
 elif opcion_menu == "1. Definición de Razones Trigonométricas":
-    mostrar_banco("1. Definición de Razones Trigonométricas", banco_sec1_definiciones, "sec1")
-
-elif opcion_menu == "2. Teorema de Pitágoras":
-    mostrar_banco("2. Teorema de Pitágoras", banco_sec2_pitagoras, "sec2")
-
-elif opcion_menu == "3. Identidades y Relaciones Trigonométricas":
-    mostrar_banco("3. Identidades y Relaciones Trigonométricas", banco_sec3_identidades, "sec3")
-
-elif opcion_menu == "4. Ángulos Conocidos y Operaciones":
-    st.header("4. Ángulos Conocidos y Operaciones")
-    with st.expander("📋 Tabla de Razones Trigonométricas Conocidas", expanded=True):
+    with st.expander("📚 CLASE EXPLICATIVA: Definición de Razones Trigonométricas", expanded=True):
         st.markdown("""
-| Angle α | sen(α) | cos(α) | tan(α) | cot(α) | sec(α) | csc(α) |
+        Las **razones trigonométricas** son relaciones cociente entre las longitudes de dos lados de un triángulo rectángulo respecto a uno de sus ángulos agudos ($\alpha$).
+
+        * **Seno ($\text{sen } \alpha$):** $\\frac{\\text{Cateto Opuesto}}{\\text{Hipotenusa}}$
+        * **Coseno ($\text{cos } \alpha$):** $\\frac{\\text{Cateto Adyacente}}{\\text{Hipotenusa}}$
+        * **Tangente ($\text{tan } \alpha$):** $\\frac{\\text{Cateto Opuesto}}{\\text{Cateto Adyacente}}$
+
+        💡 **Mnemotecnia Famosa:** **SOH - CAH - TOA**
+        * **SOH:** **S**en = **O**puesto / **H**ipotenusa
+        * **CAH:** **C**os = **A**dyacente / **H**ipotenusa
+        * **TOA:** **T**an = **O**puesto / **A**dyacente
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec1_definiciones, "sec1")
+
+# --- SECCIÓN 2 ---
+elif opcion_menu == "2. Teorema de Pitágoras":
+    with st.expander("📚 CLASE EXPLICATIVA: Teorema de Pitágoras", expanded=True):
+        st.markdown("""
+        En todo triángulo rectángulo, el cuadrado de la hipotenusa ($c$) es igual a la suma de los cuadrados de los catetos ($a$ y $b$):
+
+        $$\large c^2 = a^2 + b^2$$
+
+        * **Para hallar la Hipotenusa:** $c = \\sqrt{a^2 + b^2}$
+        * **Para hallar un Cateto:** $a = \\sqrt{c^2 - b^2}$ o $b = \\sqrt{c^2 - a^2}$
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec2_pitagoras, "sec2")
+
+# --- SECCIÓN 3 ---
+elif opcion_menu == "3. Identidades y Relaciones Trigonométricas":
+    with st.expander("📚 CLASE EXPLICATIVA: Identidades y Relaciones Trigonométricas", expanded=True):
+        st.markdown("""
+        Las 6 razones trigonométricas están directamente ligadas entre sí. Si conoces $\text{sen}(\\alpha)$ y $\text{cos}(\\alpha)$, puedes obtener todas las demás:
+
+        * **Tangente:** $\\tan(\\alpha) = \\frac{\\text{sen}(\\alpha)}{\\text{cos}(\\alpha)}$
+        * **Cotangente:** $\\cot(\\alpha) = \\frac{\\text{cos}(\\alpha)}{\\text{sen}(\\alpha)} = \\frac{1}{\\tan(\\alpha)}$
+        * **Secante:** $\\sec(\\alpha) = \\frac{1}{\\text{cos}(\\alpha)}$
+        * **Cosecante:** $\\csc(\\alpha) = \\frac{1}{\\text{sen}(\\alpha)}$
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec3_identidades, "sec3")
+
+# --- SECCIÓN 4 ---
+elif opcion_menu == "4. Ángulos Conocidos y Operaciones":
+    with st.expander("📚 CLASE EXPLICATIVA: Tabla de Ángulos Conocidos", expanded=True):
+        st.markdown("""
+        A continuación se presentan los valores numéricos exactos para los ángulos más utilizados en las evaluaciones:
+
+| Ángulo α | sen(α) | cos(α) | tan(α) | cot(α) | sec(α) | csc(α) |
 |---|---|---|---|---|---|---|
 | **0°** | 0 | 1 | 0 | ∞ | 1 | ∞ |
 | **30°** | 1/2 | √3/2 | √3/3 | √3 | 2/√3 | 2 |
@@ -518,19 +548,50 @@ elif opcion_menu == "4. Ángulos Conocidos y Operaciones":
 | **360°** | 0 | 1 | 0 | ∞ | 1 | ∞ |
 """)
     st.divider()
-    mostrar_banco("", banco_sec4_operaciones, "sec4")
+    mostrar_banco("Ejercicios Prácticos", banco_sec4_operaciones, "sec4")
 
+# --- SECCIÓN 5 ---
 elif opcion_menu == "5. Ángulos Notables (30°-60°, 45°-45°, 37°-53°)":
-    mostrar_banco("5. Ángulos Notables o Especiales", banco_sec5_notables, "sec5")
+    with st.expander("📚 CLASE EXPLICATIVA: Triángulos Notables y Proporciones", expanded=True):
+        st.markdown("""
+        Existen tres triángulos rectángulos notables cuyas proporciones entre lados son constantes:
 
+        1. **Triángulo 30° - 60°:** Proporción de lados $\\rightarrow k : k\\sqrt{3} : 2k$ (Hipotenusa $= 2k$, opuesto a 30° $= k$).
+        2. **Triángulo 45° - 45°:** Proporción de lados $\\rightarrow k : k : k\\sqrt{2}$ (Catetos iguales).
+        3. **Triángulo 37° - 53°:** Proporción aproximada $\\rightarrow 3k : 4k : 5k$ (Catetos 3k y 4k, Hipotenusa 5k).
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec5_notables, "sec5")
+
+# --- SECCIÓN 6 ---
 elif opcion_menu == "6. Cálculo de Lados y Ángulos (Calculadora)":
-    mostrar_banco("6. Cálculo de Lados y Ángulos con Calculadora", banco_sec6_calculadora, "sec6")
+    with st.expander("📚 CLASE EXPLICATIVA: Uso de Calculadora y Funciones Inversas", expanded=True):
+        st.markdown("""
+        * **Para encontrar un lado desconocido:** Se despeja la incógnita de la razón trigonométrica conveniente.
+          $$\\text{Ejemplo: } \\text{cos}(42°) = \\frac{x}{11} \\implies x = 11 \\cdot \\text{cos}(42°)$$
+        
+        * **Para encontrar un ángulo desconocido:** Se aplica la función trigonométrica inversa (SHIFT / $\text{sin}^{-1}, \text{cos}^{-1}, \text{tan}^{-1}$).
+          $$\\text{Ejemplo: } \\text{sen}(\\theta) = \\frac{32}{74} \\implies \\theta = \\text{sen}^{-1}\\left(\\frac{32}{74}\\right) \\approx 25,6°$$
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec6_calculadora, "sec6")
 
+# --- SECCIÓN 7 ---
 elif opcion_menu == "7. Ángulos de Elevación y Depresión (Aplicaciones)":
-    mostrar_banco("7. Ángulos de Elevación y Depresión (Aplicaciones Prácticas)", banco_sec7_aplicaciones, "sec7")
+    with st.expander("📚 CLASE EXPLICATIVA: Ángulos de Elevación y Depresión", expanded=True):
+        st.markdown("""
+        * **Línea de Visión / Visual:** La línea recta imaginaria que une los ojos del observador con el objeto.
+        * **Línea Horizontal:** Línea paralela al suelo que pasa por los ojos del observador.
+        * **Ángulo de Elevación:** Ángulo formado entre la línea horizontal y la línea visual **hacia arriba**.
+        * **Ángulo de Depresión:** Ángulo formado entre la línea horizontal y la línea visual **hacia abajo**.
+        """)
+    st.divider()
+    mostrar_banco("Ejercicios Prácticos", banco_sec7_aplicaciones, "sec7")
 
+# --- SECCIÓN GENERAR PRUEBAS EN PDF ---
 elif opcion_menu == "📄 Generar Prueba Desarrollo":
-    st.header("📄 Generar Prueba de Desarrollo")
+    st.header("📄 Generar Prueba de Desarrollo (Solo Evaluaciones)")
+    st.info("Nota: Las clases explicativas de la pantalla interactiva no se incluirán en el PDF generado. El PDF contendrá únicamente el formato de examen oficial con preguntas y esquemas de desarrollo.")
     
     mapeo_secciones = {
         "1. Definición de Razones": banco_sec1_definiciones,
@@ -562,10 +623,31 @@ elif opcion_menu == "📄 Generar Prueba Desarrollo":
         pdf_p = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, False)
         pdf_s = generar_pdf_desarrollo(prueba_preguntas, nombre_prueba, fecha_hoy, True)
         
-        st.success(f"✅ ¡Se generaron {len(prueba_preguntas)} ejercicios ordenados con sus ilustraciones!")
+        st.success(f"✅ ¡Se generaron {len(prueba_preguntas)} ejercicios ordenados con sus ilustraciones en PDF!")
         c1, c2 = st.columns(2)
         c1.download_button("📥 Descargar PRUEBA (.pdf)", pdf_p, file_name="Prueba_Trigonometria.pdf", mime="application/pdf")
         c2.download_button("📥 Descargar SOLUCIONARIO (.pdf)", pdf_s, file_name="Solucionario_Trigonometria.pdf", mime="application/pdf")
 
 st.divider()
 st.caption("💡 Banco de ejercicios 2° Medio — Basado en el programa oficial PPT")
+```eof
+
+---
+
+### Resumen de cambios:
+1. **Clases explicativas agregadas:** Se incorporó un bloque descriptivo `st.expander("📚 CLASE EXPLICATIVA: ...")` en cada una de las 7 secciones del menú de Streamlit con las definiciones teóricas, gráficos y fórmulas del PPT.
+2. **Generación de PDF preservada:** La función `generar_pdf_desarrollo()` continúa utilizando únicamente los bancos de preguntas (`banco_sec1_definiciones`, etc.), asegurando que el PDF generado contenga exclusivamente la evaluación limpia para los estudiantes y su solucionario.Sí, es totalmente posible estructurar el contenido para que incluya explicaciones o guías teóricas que no aparezcan al exportar o generar el PDF final.
+
+Dependiendo de las herramientas o del entorno de trabajo que estés utilizando para redactar tu documento, existen diferentes métodos para lograrlo:
+
+---
+
+### Opción 1: Uso de Bloques Ocultos / Comentarios
+Si redactas en formatos como **Markdown**, **HTML** o compiladores basados en texto (como **LaTeX**), puedes envolver la enseñanza en bloques de comentarios o condicionales.
+
+* **Markdown / HTML:**
+  ```html
+  <!-- 
+  [CLASE EXPLICATIVA / NOTA PARA EL DOCENTE]
+  Aquí va el resumen conceptual o la enseñanza antes de las preguntas.
+  -->
